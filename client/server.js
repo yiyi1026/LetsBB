@@ -2,5 +2,12 @@
 
 const express = require('express')
 const app = express()
-app.use(express.static('public'))
-app.listen(8080)
+app.use(express.static(__dirname + 'public'))
+
+app.get("/", function(req, res){
+    res.render("index");
+})
+let port = process.env.PORT || 8081
+app.listen(port, function(){
+    console.log("app running");
+})
