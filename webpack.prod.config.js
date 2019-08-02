@@ -3,9 +3,6 @@ const path = require('path')
 
 module.exports = {
   entry: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
     path.resolve(__dirname, 'client', 'index.jsx')
   ],
   resolve: {
@@ -30,7 +27,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: '"development"'
+        NODE_ENV: '"production"'
       }
     })
   ],
