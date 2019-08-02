@@ -4,7 +4,7 @@ const path = require('path')
 module.exports = {
   entry: [
     'react-hot-loader/patch',
-    'webpack-dev-server/client?https://letsbb.herokuapp.com:8080',
+    'webpack-dev-server/client?http://localhost:80',
     'webpack/hot/only-dev-server',
     path.resolve(__dirname, 'client', 'index.jsx')
   ],
@@ -35,7 +35,7 @@ module.exports = {
     })
   ],
   devServer: {
-    port: 8080,
+    port: 80,
     contentBase: path.resolve(__dirname, 'public'),
     hot: true,
     historyApiFallback: true
