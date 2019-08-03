@@ -7,7 +7,11 @@ module.exports = {
   ],
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules')],
-    extensions: ['*', '.js', '.jsx']
+    extensions: ['*', '.js', '.jsx'],
+    alias: {
+      // temp solution for npm audit fix
+      "is-plain-object": path.resolve(__dirname, 'node_modules/is-plain-object/node_modules/isobject')
+  }
   },
   module: {
     rules: [
