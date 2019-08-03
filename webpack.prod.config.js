@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = {
   entry: [
-    path.resolve(__dirname, 'client', 'index.jsx')
+    path.resolve(__dirname, 'src', 'index.jsx')
   ],
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules')],

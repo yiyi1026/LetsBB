@@ -4,17 +4,14 @@ const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 
-const ClientManager = require('./server/ClientManager')
-const ChatroomManager = require('./server/ChatroomManager')
-const makeHandlers = require('./server/handlers')
+const ClientManager = require('./src/server/ClientManager')
+const ChatroomManager = require('./src/server/ChatroomManager')
+const makeHandlers = require('./src/server/handlers')
 
 const clientManager = ClientManager()
 const chatroomManager = ChatroomManager()
 
 app.use(express.static('public'))
-app.use(express.static('config'))
-app.use(express.static('public/chatrooms'))
-app.use(express.static('public/users'))
 
 app.get("/", function(req, res){
     res.sendFile(__dirname + "/public/index.html");

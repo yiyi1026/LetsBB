@@ -1,4 +1,4 @@
-const userTemplates = require('../config/users')
+const userTemplates = require('./config/users')
 
 module.exports = function () {
   // mapping of all connected clients
