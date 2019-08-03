@@ -1,19 +1,19 @@
 module.exports = [
   {
     name: 'Terminus',
-    image: 'chatrooms/terminus.jpg'
+    image: '/chatrooms/terminus.jpg'
   },
   {
     name: 'Alexandria',
-    image: 'chatrooms/alexandria.jpg'
+    image: '/chatrooms/alexandria.jpg'
   },
   {
     name: 'Sanctuary',
-    image: 'chatrooms/sanctuary.jpg'
+    image: '/chatrooms/sanctuary.jpg'
   },
   {
     name: 'Hilltop',
-    image: 'chatrooms/hilltop.jpg'
+    image: '/chatrooms/hilltop.jpg'
   }
 ]
 
