@@ -1,5 +1,9 @@
 module.exports = [
   {
+    name: 'invisible place',
+    image: '/chatrooms/invisible.png' 
+  },
+  {
     name: 'Battle Block Theater',
     image: '/chatrooms/battle.jpg'
   },

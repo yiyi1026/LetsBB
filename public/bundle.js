@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b741d5d3b5758f5b0cc3"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "154e0640dfd662b633da"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -21014,14 +21014,14 @@ function renderAvatar(user) {
     icon: _react2.default.createElement(
       _FontIcon2.default,
       {
-        style: { fontSize: 96 },
+        style: { fontSize: 60 },
         className: 'material-icons'
       },
       'perm_identity'
     )
   };
 
-  return _react2.default.createElement(_Avatar2.default, _extends({ size: 160 }, props));
+  return _react2.default.createElement(_Avatar2.default, _extends({ size: 100 }, props));
 }
 
 function fullName(user) {

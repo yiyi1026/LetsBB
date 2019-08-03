@@ -72,14 +72,14 @@ function renderAvatar(user) {
     : {
       icon:
       <FontIcon
-        style={{ fontSize: 96 }}
+        style={{ fontSize: 60 }}
         className="material-icons"
       >
         {'perm_identity'}
       </FontIcon>
     }
 
-  return <Avatar size={160} {...props} />
+  return <Avatar size={100} {...props} />
 }
 
 function fullName(user) {
