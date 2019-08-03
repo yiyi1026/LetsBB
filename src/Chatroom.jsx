@@ -16,7 +16,7 @@ const ChatWindow = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   height: 100%;
-  width: 420px;
+  width: 800px;
   box-sizing: border-box;
 `
 const ChatPanel = styled.div`

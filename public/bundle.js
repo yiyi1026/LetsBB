@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "7629b0705d42d34eda17"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "3c682af17bbc689b1feb"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -29763,7 +29763,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['\n  position: relative;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-end;\n  height: 100%;\n  width: 420px;\n  box-sizing: border-box;\n'], ['\n  position: relative;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-end;\n  height: 100%;\n  width: 420px;\n  box-sizing: border-box;\n']),
+var _templateObject = _taggedTemplateLiteral(['\n  position: relative;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-end;\n  height: 100%;\n  width: 800px;\n  box-sizing: border-box;\n'], ['\n  position: relative;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-end;\n  height: 100%;\n  width: 800px;\n  box-sizing: border-box;\n']),
     _templateObject2 = _taggedTemplateLiteral(['\n  position: relative;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-end;\n  height: 100%;\n  width: 100%;\n  box-sizing: border-box;\n  z-index: 1;\n'], ['\n  position: relative;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-end;\n  height: 100%;\n  width: 100%;\n  box-sizing: border-box;\n  z-index: 1;\n']),
     _templateObject3 = _taggedTemplateLiteral(['\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin: 0 20px ;\n  z-index: 1;\n  color: #fafafa !important;\n  border-bottom: 1px solid;\n'], ['\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin: 0 20px ;\n  z-index: 1;\n  color: #fafafa !important;\n  border-bottom: 1px solid;\n']),
     _templateObject4 = _taggedTemplateLiteral(['\n  text-align: center;\n  font-size: 24px;\n'], ['\n  text-align: center;\n  font-size: 24px;\n']),
