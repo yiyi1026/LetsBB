@@ -2,6 +2,9 @@
   "name": "websocket-chat",
   "version": "0.0.0",
   "description": "Example group chat app built with socket.io and react.",
+  "engines": {
+    "node": "10.15.1"
+  },
   "scripts": {
     "server": "node server.js",
     "client": "webpack-dev-server",
@@ -33,7 +36,7 @@
     "socket.io": "^2.0.4",
     "styled-components": "^3.1.6",
     "webpack": "^3.11.0",
-    "webpack-dev-server": "^2.11.1"
+    "webpack-dev-server": "^2.11.5"
   },
   "devDependencies": {
     "eslint": "^4.17.0",
