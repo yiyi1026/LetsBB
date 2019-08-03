@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ec3a9ad521326af24d65"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "351a9139f266e0636186"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -32306,7 +32306,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function () {
-  var socket = io.connect('http://localhost:3000');
+  var socket = io.connect('https://letsbb.herokuapp.com:3000');
 
   function registerHandler(onMessageReceived) {
     socket.on('message', onMessageReceived);
