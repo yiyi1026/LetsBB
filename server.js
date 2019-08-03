@@ -4,9 +4,9 @@ const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 
-const ClientManager = require('./public/server/ClientManager')
-const ChatroomManager = require('./public/server/ChatroomManager')
-const makeHandlers = require('./public/server/handlers')
+const ClientManager = require('./server/ClientManager')
+const ChatroomManager = require('./server/ChatroomManager')
+const makeHandlers = require('./server/handlers')
 
 const clientManager = ClientManager()
 const chatroomManager = ChatroomManager()
