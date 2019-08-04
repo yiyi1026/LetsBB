@@ -3,7 +3,11 @@ const io = require('socket.io-client')
 export default function () {
   // const socket = io.connect('https://letsbb.herokuapp.com:3000')
   // const socket = io.connect('http://localhost:3000')
-  const socket = io.connect(window.location.origin.replace(window.location.port, "3000"))
+  let url = window.location.origin
+  if(window.location.port != ""){
+    url = url.replace(window.location.port, "3000")
+  }
+  const socket = io.connect(url)
 
   function registerHandler(onMessageReceived) {
     socket.on('message', onMessageReceived)
