@@ -4,13 +4,17 @@ const path = require('path')
 module.exports = {
   entry: [
     'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:8080',
+    'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
     path.resolve(__dirname, 'src', 'index.jsx')
   ],
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules')],
-    extensions: ['*', '.js', '.jsx']
+    extensions: ['*', '.js', '.jsx'],
+    alias: {
+      // temp solution for npm audit fix
+      "is-plain-object": path.resolve(__dirname, 'node_modules/is-plain-object/node_modules/isobject')
+    }
   },
   module: {
     rules: [
