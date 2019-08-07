@@ -87,8 +87,11 @@ module.exports = function (client, clientManager, chatroomManager) {
   }
 
   function handleMessage({ chatroomName, message } = {}, callback) {
-    let today = new Date();
-    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    let offset = -7
+    let d = new Date();
+    let utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+    let nd = new Date(utc + (3600000*offset));
+    let time = nd.getHours() + ":" + nd.getMinutes() + ":" + nd.getSeconds();
     const createEntry = () => ({ message, time })
 
     handleEvent(chatroomName, createEntry)
