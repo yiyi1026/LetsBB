@@ -87,7 +87,9 @@ module.exports = function (client, clientManager, chatroomManager) {
   }
 
   function handleMessage({ chatroomName, message } = {}, callback) {
-    const createEntry = () => ({ message })
+    let today = new Date();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const createEntry = () => ({ message, time })
 
     handleEvent(chatroomName, createEntry)
       .then(() => callback(null))

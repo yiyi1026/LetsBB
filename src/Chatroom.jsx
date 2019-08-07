@@ -145,7 +145,7 @@ export default class Chatroom extends React.Component {
   updateChatHistory(entry) {
     if(this.props.user.name != entry.user.name){
       this.state.unread += 1
-      document.title = "LetsBB (" + this.state.unread + ")"
+      document.title = "(" + this.state.unread + ") LetsBB"
     }
     this.setState({ chatHistory: this.state.chatHistory.concat(entry) })
   }
@@ -184,13 +184,13 @@ export default class Chatroom extends React.Component {
               <List>
                 {
                   this.state.chatHistory.map(
-                    ({ user, message, event }, i) => [
+                    ({ user, message, time, event }, i) => [
                       <NoDots>
                         <ListItem
                           key={i}
                           style={{ color: '#fafafa' }}
                           leftAvatar={<Avatar src={user.image} />}
-                          primaryText={`${user.name} ${event || ''}`}
+                          primaryText={`${user.name} ${event || ''} ${time} `}
                           secondaryText={
                             message &&
                             <OutputText>
