@@ -87,14 +87,23 @@ export default class Chatroom extends React.Component {
 
     this.state = {
       chatHistory,
-      input: ''
+      input: '',
+      unread: 0
     }
 
     this.onInput = this.onInput.bind(this)
+    this.onMouseMove = this.onMouseMove.bind(this)
     this.onSendMessage = this.onSendMessage.bind(this)
     this.onMessageReceived = this.onMessageReceived.bind(this)
     this.updateChatHistory = this.updateChatHistory.bind(this)
     this.scrollChatToBottom = this.scrollChatToBottom.bind(this)
+  }
+
+  onMouseMove(e){
+    if(this.state.unread > 0){
+      this.state.unread = 0
+      document.title = "LetsBB"
+    }
   }
 
   componentDidMount() {
@@ -134,6 +143,10 @@ export default class Chatroom extends React.Component {
   }
 
   updateChatHistory(entry) {
+    if(this.props.user.name != entry.user.name){
+      this.state.unread += 1
+      document.title = "LetsBB (" + this.state.unread + ")"
+    }
     this.setState({ chatHistory: this.state.chatHistory.concat(entry) })
   }
 
@@ -144,7 +157,7 @@ export default class Chatroom extends React.Component {
   render() {
     return (
       <div style={{ height: '100%' }}>
-        <ChatWindow>
+        <ChatWindow onMouseMove={this.onMouseMove}>
           <Header>
             <Title>
               { this.props.chatroom.name }
