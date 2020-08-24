@@ -1,16 +1,16 @@
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import { List, ListItem } from 'material-ui/List';
-import Avatar from 'material-ui/Avatar';
+import React from "react"
+import Dialog from "@material-ui/core/Dialog"
+import Button from "@material-ui/core/Button"
+import { List, ListItem } from "@material-ui/core"
+import { Avatar } from "@material-ui/core/"
 
-import Loader from './Loader'
+import Loader from "./Loader"
 
 export default class UserSelection extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      availableUsers: null
+      availableUsers: null,
     }
 
     this.handleSelection = this.handleSelection.bind(this)
@@ -26,7 +26,7 @@ export default class UserSelection extends React.Component {
   }
 
   renderUserItems() {
-    return this.state.availableUsers.map(user => (
+    return this.state.availableUsers.map((user) => (
       <ListItem
         onClick={() => this.handleSelection(user)}
         primaryText={user.name}
@@ -39,11 +39,7 @@ export default class UserSelection extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton
-        label="Cancel"
-        primary
-        onClick={this.props.close}
-      />
+      <Button label="Cancel" primary onClick={this.props.close} />,
     ]
 
     return (
@@ -54,15 +50,11 @@ export default class UserSelection extends React.Component {
         open
         onRequestClose={this.props.close}
       >
-        {
-          !this.state.availableUsers
-            ? <Loader />
-            : (
-              <List>
-                { this.renderUserItems() }
-              </List>
-            )
-        }
+        {!this.state.availableUsers ? (
+          <Loader />
+        ) : (
+          <List>{this.renderUserItems()}</List>
+        )}
       </Dialog>
     )
   }

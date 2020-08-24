@@ -1,27 +1,27 @@
-const express = require('express')
-const app = express()
+const express = require("express")
+const path = require("path")
+const app = express(),
+  DIST_DIR = __dirname,
+  HTML_FILE = path.join(DIST_DIR, "index.html")
+const server = require("http").createServer(app)
+const io = require("socket.io")(server)
 
-const server = require('http').createServer(app)
-const io = require('socket.io')(server)
-
-const ClientManager = require('./server/ClientManager')
-const ChatroomManager = require('./server/ChatroomManager')
-const makeHandlers = require('./server/handlers')
+const ClientManager = require("./server/ClientManager")
+const ChatroomManager = require("./server/ChatroomManager")
+const makeHandlers = require("./server/handlers")
 
 const clientManager = ClientManager()
 const chatroomManager = ChatroomManager()
 
-// app.use(express.static('public'))
+app.use(express.static("public"))
 
-// app.get("/", function(req, res){
-//     res.sendFile(__dirname + "/public/index.html");
-// })
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/public/index.html")
+})
+
 let port = process.env.PORT || 3000
 
-
-
-
-io.on('connection', function (client) {
+io.on("connection", function (client) {
   const {
     handleRegister,
     handleJoin,
@@ -29,37 +29,36 @@ io.on('connection', function (client) {
     handleMessage,
     handleGetChatrooms,
     handleGetAvailableUsers,
-    handleDisconnect
+    handleDisconnect,
   } = makeHandlers(client, clientManager, chatroomManager)
 
-  console.log('client connected...', client.id)
+  console.log("client connected...", client.id)
   clientManager.addClient(client)
 
-  client.on('register', handleRegister)
+  client.on("register", handleRegister)
 
-  client.on('join', handleJoin)
+  client.on("join", handleJoin)
 
-  client.on('leave', handleLeave)
+  client.on("leave", handleLeave)
 
-  client.on('message', handleMessage)
+  client.on("message", handleMessage)
 
-  client.on('chatrooms', handleGetChatrooms)
+  client.on("chatrooms", handleGetChatrooms)
 
-  client.on('availableUsers', handleGetAvailableUsers)
+  client.on("availableUsers", handleGetAvailableUsers)
 
-  client.on('disconnect', function () {
-    console.log('client disconnect...', client.id)
+  client.on("disconnect", function () {
+    console.log("client disconnect...", client.id)
     handleDisconnect()
   })
 
-  client.on('error', function (err) {
-    console.log('received error from client:', client.id)
+  client.on("error", function (err) {
+    console.log("received error from client:", client.id)
     console.log(err)
   })
 })
 
 server.listen(port, function (err) {
   if (err) throw err
-  console.log('listening on port 3000')
+  console.log("listening on port 3000")
 })
-

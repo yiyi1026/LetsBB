@@ -13,8 +13,8 @@ const chatroomManager = ChatroomManager()
 
 app.use(express.static('public'))
 
-app.get("/", function(req, res){
-    res.sendFile(__dirname + "/public/index.html");
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/public/index.html");
 })
 let port = process.env.PORT || 3000
 
@@ -62,4 +62,3 @@ server.listen(port, function (err) {
   if (err) throw err
   console.log('listening on port 3000')
 })
-

@@ -1,6 +1,7 @@
-import FullScreen from './FullScreen'
+import FullScreen from "./FullScreen"
+import styled from "styled-components"
 
-export default FullScreen.extend`
-  background: ${props => props.background};
-  opacity: ${props => props.opacity};
+export default styled(FullScreen)`
+  background: ${(props) => props.background};
+  opacity: ${(props) => props.opacity};
 `

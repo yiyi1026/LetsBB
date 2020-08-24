@@ -11,16 +11,19 @@ module.exports = {
     alias: {
       // temp solution for npm audit fix
       "is-plain-object": path.resolve(__dirname, 'node_modules/is-plain-object/node_modules/isobject')
-  }
+    }
   },
   module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader']
+    rules: [{
+      test: /\.js|\.jsx$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+      },
+      options: {
+        presets: ['@babel/preset-env']
       }
-    ]
+    }]
   },
   output: {
     path: path.resolve(__dirname, 'public'),
