@@ -10,16 +10,15 @@ module.exports = {
     extensions: ['*', '.js', '.jsx'],
     alias: {
       // temp solution for npm audit fix
-      "is-plain-object": path.resolve(__dirname, 'node_modules/is-plain-object/node_modules/isobject')
+      "is-plain-object": path.resolve(__dirname, 'node_modules/is-plain-object/node_modules/isobject'),
+      'react-dom': '@hot-loader/react-dom'
     }
   },
   module: {
     rules: [{
       test: /\.js|\.jsx$/,
       exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-      },
+      loader: 'babel-loader',
       options: {
         presets: ['@babel/preset-env']
       }
@@ -31,11 +30,8 @@ module.exports = {
     filename: 'bundle.js'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      }
+      'process.env.NODE_ENV': JSON.stringify('production')
     })
   ],
   devServer: {

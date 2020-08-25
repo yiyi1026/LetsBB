@@ -19,16 +19,15 @@ module.exports = {
         __dirname,
         "node_modules/is-plain-object/node_modules/isobject"
       ),
+      'react-dom': '@hot-loader/react-dom'
     },
   },
   module: {
-    rules: [
-      {
-        test: /\.js|\.jsx$/,
-        exclude: /node_modules/,
-        loader: ["babel-loader"],
-      },
-    ],
+    rules: [{
+      test: /\.js|\.jsx$/,
+      exclude: /node_modules/,
+      loader: "babel-loader",
+    }, ],
   },
   output: {
     path: path.resolve(__dirname, "public"),
@@ -36,11 +35,8 @@ module.exports = {
     filename: "bundle.js",
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: '"development"',
-      },
+      'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
   devServer: {

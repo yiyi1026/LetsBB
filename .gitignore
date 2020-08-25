@@ -1,1 +1,9 @@
 node_modules
+.env.*
+# Optional npm cache directory
+.npm
+# Mac
+.DS_Store
+
+bundle.js
+bundle.js.map
