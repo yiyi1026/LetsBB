@@ -2,8 +2,17 @@
 const express = require('express')
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
+const cors = require('cors')
 
 const app = express();
+
+app.use(cors({
+  origin(origin, callback) {
+    return callback(null, true);
+  },
+  optionsSuccessStatus: 200,
+  credentials: true
+}));
 
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
@@ -11,10 +20,6 @@ const config = require('./webpack.config.js');
 
 const compiler = webpack(config);
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-  next();
-});
 // Tell express to use the webpack-dev-middleware and use the webpack.config.js
 // configuration file as a base.
 app.use(webpackDevMiddleware(compiler, {
