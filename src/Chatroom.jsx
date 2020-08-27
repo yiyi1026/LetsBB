@@ -1,12 +1,12 @@
-import React from "react"
-import styled from "styled-components"
-import Button from "@material-ui/core/Button"
-import TextField from "@material-ui/core/TextField"
-import { Fab } from "@material-ui/core"
-import { Icon } from "@material-ui/core"
-import { Avatar, Divider, List, ListItem } from "@material-ui/core"
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/destructuring-assignment */
+import { Avatar, Divider, Fab, Icon, List, ListItem } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import React from 'react'
+import styled from 'styled-components'
 
-import Overlay from "./Overlay"
+import Overlay from './Overlay'
 
 const ChatWindow = styled.div`
   position: relative;
@@ -17,6 +17,7 @@ const ChatWindow = styled.div`
   width: 800px;
   box-sizing: border-box;
 `
+
 const ChatPanel = styled.div`
   position: relative;
   display: inline-flex;
@@ -85,27 +86,26 @@ export default class Chatroom extends React.Component {
 
     this.state = {
       chatHistory,
-      input: "",
-      unread: 0,
+      input: '',
+      unread: 0
     }
 
     this.onInput = this.onInput.bind(this)
-    this.onMouseMove = this.onMouseMove.bind(this)
-    this.onSendMessage = this.onSendMessage.bind(this)
-    this.onMessageReceived = this.onMessageReceived.bind(this)
-    this.updateChatHistory = this.updateChatHistory.bind(this)
-    this.scrollChatToBottom = this.scrollChatToBottom.bind(this)
-  }
 
-  onMouseMove(e) {
-    if (this.state.unread > 0) {
-      this.state.unread = 0
-      document.title = "LetsBB"
-    }
+    this.onMouseMove = this.onMouseMove.bind(this)
+
+    this.onSendMessage = this.onSendMessage.bind(this)
+
+    this.onMessageReceived = this.onMessageReceived.bind(this)
+
+    this.updateChatHistory = this.updateChatHistory.bind(this)
+
+    this.scrollChatToBottom = this.scrollChatToBottom.bind(this)
   }
 
   componentDidMount() {
     this.props.registerHandler(this.onMessageReceived)
+
     this.scrollChatToBottom()
   }
 
@@ -117,9 +117,17 @@ export default class Chatroom extends React.Component {
     this.props.unregisterHandler()
   }
 
+  onMouseMove(_) {
+    if (this.state.unread > 0) {
+      this.state.unread = 0
+
+      document.title = 'LetsBB'
+    }
+  }
+
   onInput(e) {
     this.setState({
-      input: e.target.value,
+      input: e.target.value
     })
   }
 
@@ -129,45 +137,66 @@ export default class Chatroom extends React.Component {
     this.props.onSendMessage(this.state.input, (err) => {
       if (err) return console.error(err)
 
-      return this.setState({ input: "" })
+      return this.setState({
+        input: ''
+      })
     })
   }
 
   onMessageReceived(entry) {
-    console.log("onMessageReceived:", entry)
+    console.log('onMessageReceived:', entry)
+
     this.updateChatHistory(entry)
   }
 
   updateChatHistory(entry) {
-    if (this.props.user.name != entry.user.name) {
+    if (this.props.user.name !== entry.user.name) {
       this.state.unread += 1
-      document.title = "(" + this.state.unread + ") LetsBB"
+
+      document.title = `(${this.state.unread}) LetsBB`
     }
-    this.setState({ chatHistory: this.state.chatHistory.concat(entry) })
+
+    this.setState({
+      chatHistory: this.state.chatHistory.concat(entry)
+    })
   }
 
   scrollChatToBottom() {
-    this.panel.scrollTo(0, this.panel.scrollHeight)
+    if (this.panel) {
+      this.panel.scrollTo(0, this.panel.scrollHeight)
+    }
   }
 
   render() {
     return (
-      <div style={{ height: "100%" }}>
+      <div
+        style={{
+          height: '100%'
+        }}
+      >
         <ChatWindow onMouseMove={this.onMouseMove}>
           <Header>
             <Title>{this.props.chatroom.name}</Title>
+
             <Button
               variant="contained"
               primary
-              icon={
-                <Icon style={{ fontSize: 24 }} className="material-icons">
-                  {"close"}
+              icon={(
+                <Icon
+                  style={{
+                    fontSize: 24
+                  }}
+                  className="material-icons"
+                >
+                  close
                 </Icon>
-              }
+              )}
               onClick={this.props.onLeave}
             />
           </Header>
+
           <ChatroomImage src={this.props.chatroom.image} alt="" />
+
           <ChatPanel>
             <Scrollable
               innerRef={(panel) => {
@@ -180,26 +209,36 @@ export default class Chatroom extends React.Component {
                     <NoDots>
                       <ListItem
                         key={i}
-                        style={{ color: "#fafafa" }}
+                        style={{
+                          color: '#fafafa'
+                        }}
                         leftAvatar={<Avatar src={user.image} />}
-                        primaryText={`${user.name} ${event || ""} ${
-                          time || ""
+                        primaryText={`${user.name} ${event || ''} ${
+                          time || ''
                         } `}
                         secondaryText={
                           message && <OutputText>{message}</OutputText>
                         }
                       />
                     </NoDots>,
-                    <Divider inset />,
+
+                    <Divider inset />
                   ]
                 )}
               </List>
             </Scrollable>
+
             <InputPanel>
               <TextField
-                textareaStyle={{ color: "#fafafa" }}
-                hintStyle={{ color: "#fafafa" }}
-                floatingLabelStyle={{ color: "#fafafa" }}
+                textareaStyle={{
+                  color: '#fafafa'
+                }}
+                hintStyle={{
+                  color: '#fafafa'
+                }}
+                floatingLabelStyle={{
+                  color: '#fafafa'
+                }}
                 hintText="Enter a message."
                 floatingLabelText="Enter a message."
                 multiLine
@@ -207,17 +246,27 @@ export default class Chatroom extends React.Component {
                 rowsMax={4}
                 onChange={this.onInput}
                 value={this.state.input}
-                onKeyPress={(e) =>
-                  e.key === "Enter" ? this.onSendMessage() : null
-                }
+                onKeyPress={(e) => (e.key === 'Enter' ? this.onSendMessage() : null)}
               />
-              <Fab onClick={this.onSendMessage} style={{ marginLeft: 20 }}>
-                <Icon style={{ fontSize: 32 }} className="material-icons">
-                  {"chat_bubble_outline"}
+
+              <Fab
+                onClick={this.onSendMessage}
+                style={{
+                  marginLeft: 20
+                }}
+              >
+                <Icon
+                  style={{
+                    fontSize: 32
+                  }}
+                  className="material-icons"
+                >
+                  chat_bubble_outline
                 </Icon>
               </Fab>
             </InputPanel>
           </ChatPanel>
+
           <Overlay opacity={0.6} background="#111111" />
         </ChatWindow>
       </div>

@@ -1,10 +1,20 @@
-import React from "react"
-import Dialog from "@material-ui/core/Dialog"
-import Button from "@material-ui/core/Button"
-import { List, ListItem } from "@material-ui/core"
-import { Avatar } from "@material-ui/core/"
+import { List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
+import { Avatar } from '@material-ui/core'
+import { Dialog, DialogTitle } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import { blue } from '@material-ui/core/colors'
+import { makeStyles } from '@material-ui/core/styles'
+import { PersonIcon } from '@material-ui/icons/Person'
+import React from 'react'
 
-import Loader from "./Loader"
+import Loader from './Loader'
+
+const useStyles = makeStyles({
+  avatar: {
+    backgroundColor: blue[100],
+    color: blue[600],
+  },
+})
 
 export default class UserSelection extends React.Component {
   constructor(props) {
@@ -28,28 +38,30 @@ export default class UserSelection extends React.Component {
   renderUserItems() {
     return this.state.availableUsers.map((user) => (
       <ListItem
+        autoFocus
+        button
         onClick={() => this.handleSelection(user)}
-        primaryText={user.name}
-        secondaryText={user.statusText}
+        // secondaryText={user.statusText}
         key={user.name}
-        leftAvatar={<Avatar src={user.image} alt="" />}
-      />
+      >
+        <ListItemAvatar>
+          <Avatar src={user.image} alt="">
+            <PersonIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={user.name} secondaryText={user.statusText} />
+      </ListItem>
     ))
   }
 
   render() {
-    const actions = [
-      <Button label="Cancel" primary onClick={this.props.close} />,
-    ]
-
     return (
       <Dialog
-        title="Pick your character."
-        actions={actions}
-        modal={false}
-        open
-        onRequestClose={this.props.close}
+        // style={{ minWidth: 400 }}
+        onClose={() => this.props.close}
+        open={true}
       >
+        <DialogTitle id="choose-user-title">Pick your character.</DialogTitle>>
         {!this.state.availableUsers ? (
           <Loader />
         ) : (

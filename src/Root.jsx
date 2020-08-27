@@ -1,14 +1,14 @@
-import { hot } from "react-hot-loader/root"
-import React from "react"
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import React from 'react'
+import { hot } from 'react-hot-loader/root'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 
-import MainLayout from "./MainLayout"
-import Home from "./Home"
-import Loader from "./Loader"
-import UserSelection from "./UserSelection"
-import Chatroom from "./Chatroom"
-import socket from "./socket"
+import Chatroom from './Chatroom'
+import Home from './Home'
+import Loader from './Loader'
+import MainLayout from './MainLayout'
+import socket from './socket'
+import UserSelection from './UserSelection'
 
 const theme = createMuiTheme({})
 
@@ -134,13 +134,18 @@ class Root extends React.Component {
                   path="/user"
                   render={(props) => {
                     const toHome = () => props.history.push("/")
-                    return this.renderUserSelectionOrRedirect(() => (
-                      <UserSelection
-                        getAvailableUsers={this.state.client.getAvailableUsers}
-                        close={toHome}
-                        register={(name) => this.register(name, toHome)}
-                      />
-                    ))
+                    return this.renderUserSelectionOrRedirect(() => {
+                      console.log(props)
+                      return (
+                        <UserSelection
+                          getAvailableUsers={
+                            this.state.client.getAvailableUsers
+                          }
+                          close={toHome}
+                          register={(name) => this.register(name, toHome)}
+                        />
+                      )
+                    })
                   }}
                 />
                 {this.state.chatrooms.map((chatroom) => (

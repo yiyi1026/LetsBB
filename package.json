@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "description": "Example group chat app built with socket.io and react.",
   "engines": {
-    "node": "14.8.0"
+    "node": "12.18.3"
   },
   "scripts": {
-    "build": "webpack --mode=production --config webpack.prod.config.js",
+    "build": "webpack --mode=development --config webpack.prod.config.js",
     "local_frontend": "webpack-dev-server --mode=development --hot --inline --config webpack.config.js",
     "local_backend": "node server.dev.js",
     "dev": "npm-run-all -p local_backend local_frontend",
@@ -26,6 +26,7 @@
     "@babel/preset-react": "^7.10.4",
     "@hot-loader/react-dom": "^16.13.0",
     "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "babel-loader": "^8.1.0",
     "create-react-app": "3.4.1",
     "express": "^4.17.1",

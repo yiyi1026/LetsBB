@@ -1,29 +1,32 @@
-import React from "react"
-import styled from "styled-components"
-import { Paper } from "@material-ui/core"
-import { Card, CardMedia, CardHeader } from "@material-ui/core"
+import { Paper } from '@material-ui/core'
+import { Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import React from 'react'
+import styled from 'styled-components'
 
 const Wrapper = styled.div`
   cursor: pointer;
 `
-
-const getCardTitleStyle = () => ({
-  display: "flex",
-  alignItems: "center",
+const useStyles = makeStyles({
+  card: {},
+  media: {
+    minHeight: 140,
+  },
 })
 
-export default ({ chatroom, onEnter }) => (
-  <Paper style={{ maxWidth: 600, marginBottom: 40 }} zDepth={5}>
-    <Wrapper onClick={onEnter}>
-      <Card>
-        <CardMedia
-          overlay={
-            <CardHeader title={chatroom.name} style={getCardTitleStyle()} />
-          }
-        >
-          <img height="100%" src={chatroom.image} alt="" />
-        </CardMedia>
-      </Card>
-    </Wrapper>
-  </Paper>
-)
+export default ({ chatroom, onEnter }) => {
+  const classes = useStyles()
+  return (
+    <Paper style={{ minWidth: 500, marginBottom: 40 }} elevation={1}>
+      <Wrapper onClick={onEnter}>
+        <Card className={classes.card}>
+          <CardActionArea>
+            <CardMedia className={classes.media} image={chatroom.image} />
+            <CardContent></CardContent>
+          </CardActionArea>
+          <CardActions>{chatroom.name}</CardActions>
+        </Card>
+      </Wrapper>
+    </Paper>
+  )
+}
