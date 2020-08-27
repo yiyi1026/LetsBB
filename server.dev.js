@@ -4,12 +4,17 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 
 const app = express();
+
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 const config = require('./webpack.config.js');
 
 const compiler = webpack(config);
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  next();
+});
 // Tell express to use the webpack-dev-middleware and use the webpack.config.js
 // configuration file as a base.
 app.use(webpackDevMiddleware(compiler, {
