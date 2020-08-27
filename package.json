@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "webpack --mode=development --config webpack.prod.config.js",
-    "local_frontend": "webpack-dev-server --mode=development --hot --inline --config webpack.config.js",
+    "local_frontend": "webpack-dev-server --open --hot --inline --config webpack.config.js",
     "local_backend": "node server.dev.js",
     "dev": "npm-run-all -p local_backend local_frontend",
     "start": "node server.js"

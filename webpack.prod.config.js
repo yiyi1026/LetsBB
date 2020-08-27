@@ -10,7 +10,7 @@ module.exports = {
     extensions: ['*', '.js', '.jsx'],
     alias: {
       // temp solution for npm audit fix
-      "is-plain-object": path.resolve(__dirname, 'node_modules/is-plain-object/node_modules/isobject'),
+      'is-plain-object': path.resolve(__dirname, 'node_modules/is-plain-object/node_modules/isobject'),
       'react-dom': '@hot-loader/react-dom'
     }
   },
