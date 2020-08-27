@@ -1,7 +1,7 @@
 module.exports = [
   {
     name: 'invisible place',
-    image: '/chatrooms/invisible.png' 
+    image: '/chatrooms/invisible.png'
   },
   {
     name: 'Battle Block Theater',
@@ -16,4 +16,3 @@ module.exports = [
     image: '/chatrooms/zelda.jpg'
   }
 ]
-

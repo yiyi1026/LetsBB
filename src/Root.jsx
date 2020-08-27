@@ -20,7 +20,7 @@ class Root extends React.Component {
       user: null,
       isRegisterInProcess: false,
       client: socket(),
-      chatrooms: null,
+      chatrooms: null
     }
 
     this.onEnterChatroom = this.onEnterChatroom.bind(this)
@@ -57,8 +57,7 @@ class Root extends React.Component {
   }
 
   register(name) {
-    const onRegisterResponse = (user) =>
-      this.setState({ isRegisterInProcess: false, user })
+    const onRegisterResponse = (user) => this.setState({ isRegisterInProcess: false, user })
     this.setState({ isRegisterInProcess: true })
     this.state.client.register(name, (err, user) => {
       if (err) return onRegisterResponse(null)
@@ -86,12 +85,8 @@ class Root extends React.Component {
         chatroom={chatroom}
         chatHistory={chatHistory}
         user={this.state.user}
-        onLeave={() =>
-          this.onLeaveChatroom(chatroom.name, () => history.push("/"))
-        }
-        onSendMessage={(message, cb) =>
-          this.state.client.message(chatroom.name, message, cb)
-        }
+        onLeave={() => this.onLeaveChatroom(chatroom.name, () => history.push('/'))}
+        onSendMessage={(message, cb) => this.state.client.message(chatroom.name, message, cb)}
         registerHandler={this.state.client.registerHandler}
         unregisterHandler={this.state.client.unregisterHandler}
       />
@@ -114,18 +109,15 @@ class Root extends React.Component {
                     <Home
                       user={this.state.user}
                       chatrooms={this.state.chatrooms}
-                      onChangeUser={() => props.history.push("/user")}
-                      onEnterChatroom={(chatroomName) =>
-                        this.onEnterChatroom(
-                          chatroomName,
-                          () => props.history.push("/user"),
-                          (chatHistory) =>
-                            props.history.push({
-                              pathname: chatroomName,
-                              state: { chatHistory },
-                            })
-                        )
-                      }
+                      onChangeUser={() => props.history.push('/user')}
+                      onEnterChatroom={(chatroomName) => this.onEnterChatroom(
+                        chatroomName,
+                        () => props.history.push('/user'),
+                        (chatHistory) => props.history.push({
+                          pathname: chatroomName,
+                          state: { chatHistory }
+                        })
+                      )}
                     />
                   )}
                 />
@@ -133,19 +125,16 @@ class Root extends React.Component {
                   exact
                   path="/user"
                   render={(props) => {
-                    const toHome = () => props.history.push("/")
-                    return this.renderUserSelectionOrRedirect(() => {
-                      console.log(props)
-                      return (
-                        <UserSelection
-                          getAvailableUsers={
+                    const toHome = () => props.history.push('/')
+                    return this.renderUserSelectionOrRedirect(() => (
+                      <UserSelection
+                        getAvailableUsers={
                             this.state.client.getAvailableUsers
                           }
-                          close={toHome}
-                          register={(name) => this.register(name, toHome)}
-                        />
-                      )
-                    })
+                        close={toHome}
+                        register={(name) => this.register(name, toHome)}
+                      />
+                    ))
                   }}
                 />
                 {this.state.chatrooms.map((chatroom) => (
@@ -153,9 +142,7 @@ class Root extends React.Component {
                     key={chatroom.name}
                     exact
                     path={`/${chatroom.name}`}
-                    render={(props) =>
-                      this.renderChatroomOrRedirect(chatroom, props)
-                    }
+                    render={(props) => this.renderChatroomOrRedirect(chatroom, props)}
                   />
                 ))}
               </Switch>

@@ -1,6 +1,4 @@
-import { List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
-import { Avatar } from '@material-ui/core'
-import { Dialog, DialogTitle } from '@material-ui/core'
+import { Avatar, Dialog, DialogTitle, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { blue } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
@@ -12,15 +10,15 @@ import Loader from './Loader'
 const useStyles = makeStyles({
   avatar: {
     backgroundColor: blue[100],
-    color: blue[600],
-  },
+    color: blue[600]
+  }
 })
 
 export default class UserSelection extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      availableUsers: null,
+      availableUsers: null
     }
 
     this.handleSelection = this.handleSelection.bind(this)
@@ -59,9 +57,9 @@ export default class UserSelection extends React.Component {
       <Dialog
         // style={{ minWidth: 400 }}
         onClose={() => this.props.close}
-        open={true}
+        open
       >
-        <DialogTitle id="choose-user-title">Pick your character.</DialogTitle>>
+        <DialogTitle id="choose-user-title">Pick your character.</DialogTitle>
         {!this.state.availableUsers ? (
           <Loader />
         ) : (

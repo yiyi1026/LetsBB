@@ -1,8 +1,19 @@
 {
-  "extends": ["eslint:recommended", "airbnb"],
+  "extends": [
+    "eslint:recommended",
+    "airbnb"
+  ],
   "rules": {
-    "linebreak-style": ["error", "unix"],
-    "comma-dangle": ["error", { "functions": "never" }],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "comma-dangle": [
+      "error",
+      {
+        "functions": "never"
+      }
+    ],
     "no-underscore-dangle": 0,
     "no-nested-ternary": 0,
     "radix": 0,
@@ -15,17 +26,25 @@
     "object-curly-newline": [
       "error",
       {
-        "ObjectExpression": "always",
-        "ObjectPattern": { "multiline": true },
+        // "ObjectExpression": "always",
+        // "ObjectPattern": { "multiline": true },
         "ImportDeclaration": "never",
-        "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+        "ExportDeclaration": {
+          "multiline": true,
+          "minProperties": 3
+        }
       }
     ],
-    "jsx-quotes": ["error", "prefer-double"],
+    "jsx-quotes": [
+      "error",
+      "prefer-double"
+    ],
     "react/destructuring-assignment": [
       "error",
       "always",
-      { "ignoreClassFields": true }
+      {
+        "ignoreClassFields": true
+      }
     ]
   },
   "env": {

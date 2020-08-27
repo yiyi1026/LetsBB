@@ -1,4 +1,5 @@
 const express = require('express')
+
 const app = express()
 
 const server = require('http').createServer(app)
@@ -13,13 +14,10 @@ const chatroomManager = ChatroomManager()
 
 app.use(express.static('public'))
 
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/public/index.html");
+app.get('/', function (req, res) {
+  res.sendFile(`${__dirname}/public/index.html`);
 })
-let port = process.env.PORT || 3000
-
-
-
+const port = process.env.PORT || 3000
 
 io.on('connection', function (client) {
   const {
