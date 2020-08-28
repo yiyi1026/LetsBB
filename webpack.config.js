@@ -4,7 +4,7 @@ const path = require('path')
 module.exports = {
   entry: [
     'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:3000',
+    'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
     path.resolve(__dirname, 'src', 'index.jsx')
   ],
@@ -40,6 +40,12 @@ module.exports = {
   ],
   devServer: {
     port: 8080,
+    // overlay: true,
+    // hot: true,
+    // inline: true,
+    // quiet: false,
+    // noInfo: true,
+    // stats: { colors: true },
     contentBase: './public',
     historyApiFallback: true
   },

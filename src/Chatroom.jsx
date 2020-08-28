@@ -216,7 +216,7 @@ export default class Chatroom extends React.Component {
                         primaryText={`${user.name} ${event || ''} ${
                           time || ''
                         } `}
-                        secondaryText={
+                        secondary={
                           message && <OutputText>{message}</OutputText>
                         }
                       />
