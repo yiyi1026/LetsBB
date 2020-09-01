@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import { Avatar,
   Button,
   Dialog,
@@ -9,7 +10,6 @@ import { Avatar,
   ListItemText } from '@material-ui/core'
 import { blue } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
-import { PersonIcon } from '@material-ui/icons/Person'
 import React from 'react'
 
 import Loader from './Loader'
@@ -43,6 +43,7 @@ export default class UserSelection extends React.Component {
   renderUserItems() {
     const { availableUsers } = this.state
     if (availableUsers) {
+      console.log(availableUsers)
       return availableUsers.map((user) => (
         <ListItem
           autoFocus
@@ -52,20 +53,20 @@ export default class UserSelection extends React.Component {
         >
           <ListItemAvatar>
             <Avatar src={user.image} alt="" className={useStyles.avatar}>
-              <PersonIcon />
+              {/* <PersonIcon /> */}
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary={user.name} secondary={user.statusText} />
         </ListItem>
       ))
     }
+    console.log('49')
     return <></>
   }
 
   render() {
     const { close } = this.props
     const { availableUsers } = this.state
-    console.log(close, availableUsers)
     return (
       <Dialog
         // style={{ minWidth: 400 }}
