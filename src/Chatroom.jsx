@@ -1,13 +1,30 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
-import { Avatar, Divider, Fab, Icon, List, ListItem } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
+import {
+  Avatar,
+  Button,
+  Divider,
+  Fab,
+  Icon,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  TextField,
+} from '@material-ui/core'
+import { blue } from '@material-ui/core/colors'
+import { makeStyles } from '@material-ui/core/styles'
 import React from 'react'
 import styled from 'styled-components'
 
 import Overlay from './Overlay'
 
+const useStyles = makeStyles({
+  avatar: {
+    backgroundColor: blue[100],
+    color: blue[600]
+  }
+})
 const ChatWindow = styled.div`
   position: relative;
   display: inline-flex;
@@ -180,7 +197,7 @@ export default class Chatroom extends React.Component {
 
             <Button
               variant="contained"
-              primary
+              color="primary"
               icon={(
                 <Icon
                   style={{
@@ -206,23 +223,29 @@ export default class Chatroom extends React.Component {
               <List>
                 {this.state.chatHistory.map(
                   ({ user, message, time, event }, i) => [
-                    <NoDots>
+                    <NoDots key="nodots">
                       <ListItem
                         key={i}
                         style={{
                           color: '#fafafa'
                         }}
-                        leftAvatar={<Avatar src={user.image} />}
-                        primaryText={`${user.name} ${event || ''} ${
-                          time || ''
-                        } `}
-                        secondary={
-                          message && <OutputText>{message}</OutputText>
-                        }
-                      />
+                      >
+                        <ListItemAvatar key="avatar">
+                          <Avatar src={user.image} alt="" className={useStyles.avatar}>
+                            {/* <PersonIcon /> */}
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          key="user-signature"
+                          primary={`${user.name} ${event || ''} ${
+                            time || ''
+                          } `}
+                          secondary={user.message}
+                        />
+                      </ListItem>
                     </NoDots>,
 
-                    <Divider inset />
+                    <Divider key="divider" variant="inset" component="li" />
                   ]
                 )}
               </List>
@@ -230,19 +253,18 @@ export default class Chatroom extends React.Component {
 
             <InputPanel>
               <TextField
-                textareaStyle={{
-                  color: '#fafafa'
-                }}
-                hintStyle={{
-                  color: '#fafafa'
-                }}
-                floatingLabelStyle={{
-                  color: '#fafafa'
-                }}
-                hintText="Enter a message."
-                floatingLabelText="Enter a message."
-                multiLine
-                rows={4}
+                // textareaStyle={{
+                //   color: '#fafafa'
+                // }}
+                // hintStyle={{
+                //   color: '#fafafa'
+                // }}
+                // floatingLabelStyle={{
+                //   color: '#fafafa'
+                // }}
+                label="Enter a message."
+                // floatingLabelText="Enter a message."
+                multiline
                 rowsMax={4}
                 onChange={this.onInput}
                 value={this.state.input}
