@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const express = require('express')
 const webpack = require('webpack');
+// const path = require('path');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const cors = require('cors')
 
@@ -20,14 +21,21 @@ const config = require('./webpack.config.js');
 
 const compiler = webpack(config);
 
-// Tell express to use the webpack-dev-middleware and use the webpack.config.js
-// configuration file as a base.
+/**
+ * Tell express to use the webpack-dev-middleware and use the webpack.config.js
+configuration file as a base.
+ *
+ *
+ *
+ *
+ * * */
+
 app.use(webpackDevMiddleware(compiler, {
   open: true,
   stats: {
     colors: true
   },
-  host: 'localhost',
+  // host: 'localhost',
   transportMode: 'ws',
   injectClient: false,
   publicPath: config.output.publicPath
@@ -40,11 +48,9 @@ const makeHandlers = require('./server/handlers')
 const clientManager = ClientManager()
 const chatroomManager = ChatroomManager()
 
-app.use(express.static('public'))
-
-app.get('/', function (req, res) {
-  res.sendFile(`${__dirname}/public/index.html`)
-})
+// app.get('/', function (req, res) {
+//   res.sendFile(HTML_FILE)
+// })
 
 const port = process.env.PORT || 3000
 

@@ -7,8 +7,8 @@
   },
   "scripts": {
     "build": "webpack --mode=development --config webpack.prod.config.js",
-    "local_frontend": "webpack-dev-server --open --hot --inline --config webpack.config.js --host localhost",
-    "server": "node server.dev.js",
+    "local_frontend": "webpack-dev-server --open --hot --inline --config webpack.config.js",
+    "server": "node server.dev.js localhost 3000",
     "dev": "npm-run-all -p local_backend local_frontend",
     "start": "node server.js"
   },
@@ -53,7 +53,7 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
-    "html-webpack-plugin": "^4.3.0",
+    "html-webpack-plugin": "^4.4.1",
     "npm-run-all": "^4.1.5",
     "webpack-cli": "^3.3.12",
     "webpack-hot-middleware": "^2.25.0"
