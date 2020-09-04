@@ -8,7 +8,7 @@ import Home from './Home'
 import Loader from './Loader'
 import MainLayout from './MainLayout'
 import socket from './socket'
-import UserSelection from './UserSelection'
+import Login from './Login'
 
 const theme = createMuiTheme({})
 
@@ -101,52 +101,50 @@ class Root extends React.Component {
             {!this.state.chatrooms ? (
               <Loader />
             ) : (
-              <Switch>
-                <Route
-                  exact
-                  path="/"
-                  render={(props) => (
-                    <Home
-                      user={this.state.user}
-                      chatrooms={this.state.chatrooms}
-                      onChangeUser={() => props.history.push('/user')}
-                      onEnterChatroom={(chatroomName) => this.onEnterChatroom(
-                        chatroomName,
-                        () => props.history.push('/user'),
-                        (chatHistory) => props.history.push({
-                          pathname: chatroomName,
-                          state: { chatHistory }
-                        })
-                      )}
-                    />
-                  )}
-                />
-                <Route
-                  exact
-                  path="/user"
-                  render={(props) => {
-                    const toHome = () => props.history.push('/')
-                    return this.renderUserSelectionOrRedirect(() => (
-                      <UserSelection
-                        getAvailableUsers={
-                            this.state.client.getAvailableUsers
-                          }
-                        close={toHome}
-                        register={(name) => this.register(name, toHome)}
-                      />
-                    ))
-                  }}
-                />
-                {this.state.chatrooms.map((chatroom) => (
+                <Switch>
                   <Route
-                    key={chatroom.name}
                     exact
-                    path={`/${chatroom.name}`}
-                    render={(props) => this.renderChatroomOrRedirect(chatroom, props)}
+                    path="/"
+                    render={(props) => (
+                      <Home
+                        user={this.state.user}
+                        chatrooms={this.state.chatrooms}
+                        onChangeUser={() => props.history.push('/login')}
+                        onEnterChatroom={(chatroomName) => this.onEnterChatroom(
+                          chatroomName,
+                          () => props.history.push('/login'),
+                          (chatHistory) => props.history.push({
+                            pathname: chatroomName,
+                            state: { chatHistory }
+                          })
+                        )}
+                      />
+                    )}
                   />
-                ))}
-              </Switch>
-            )}
+                  <Route
+                    exact
+                    path="/login"
+
+                    render={(props) => {
+                        const toHome = () => props.history.push('/')
+                        return <Login
+                                  clientLogin={this.state.client.login}
+                                  close={toHome}
+                                  register={(name) => this.register(name, toHome)}
+                                />
+                      }
+                    }
+                  />
+                  {this.state.chatrooms.map((chatroom) => (
+                    <Route
+                      key={chatroom.name}
+                      exact
+                      path={`/${chatroom.name}`}
+                      render={(props) => this.renderChatroomOrRedirect(chatroom, props)}
+                    />
+                  ))}
+                </Switch>
+              )}
           </MainLayout>
         </ThemeProvider>
       </BrowserRouter>

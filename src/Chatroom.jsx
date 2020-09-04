@@ -5,6 +5,7 @@ import {
   Button,
   Divider,
   Fab,
+  IconButton,
   Icon,
   List,
   ListItem,
@@ -15,6 +16,7 @@ import {
 import { blue } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
 import React from 'react'
+import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components'
 
 import Overlay from './Overlay'
@@ -167,7 +169,7 @@ export default class Chatroom extends React.Component {
   }
 
   updateChatHistory(entry) {
-    if (this.props.user.name !== entry.user.name) {
+    if (this.props.user.id !== entry.user.id) {
       this.state.unread += 1
 
       document.title = `(${this.state.unread}) LetsBB`
@@ -176,6 +178,7 @@ export default class Chatroom extends React.Component {
     this.setState({
       chatHistory: this.state.chatHistory.concat(entry)
     })
+    console.log(this.state.chatHistory)
   }
 
   scrollChatToBottom() {
@@ -195,21 +198,9 @@ export default class Chatroom extends React.Component {
           <Header>
             <Title>{this.props.chatroom.name}</Title>
 
-            <Button
-              variant="contained"
-              color="primary"
-              icon={(
-                <Icon
-                  style={{
-                    fontSize: 24
-                  }}
-                  className="material-icons"
-                >
-                  close
-                </Icon>
-              )}
-              onClick={this.props.onLeave}
-            />
+            <IconButton color="primary" onClick={this.props.onLeave}>
+             <CloseIcon/>
+            </IconButton>
           </Header>
 
           <ChatroomImage src={this.props.chatroom.image} alt="" />
@@ -237,10 +228,10 @@ export default class Chatroom extends React.Component {
                         </ListItemAvatar>
                         <ListItemText
                           key="user-signature"
-                          primary={`${user.name} ${event || ''} ${
+                          primary={`${user.id} ${event || ''} ${
                             time || ''
                           } `}
-                          secondary={user.message}
+                          secondary={message}
                         />
                       </ListItem>
                     </NoDots>,

@@ -24,18 +24,37 @@ module.exports = function () {
     const usersTaken = new Set(
       Array.from(clients.values())
         .filter((c) => c.user)
-        .map((c) => c.user.name)
+        .map((c) => c.user.id)
     )
     return userTemplates
-      .filter((u) => !usersTaken.has(u.name))
+      .filter((u) => !usersTaken.has(u.id))
   }
 
-  function isUserAvailable(userName) {
-    return getAvailableUsers().some((u) => u.name === userName)
+  function login(userId, pass){
+    const user = userTemplates.find(el => el.id == userId)
+    console.log(userId, pass)
+    if(user){
+      const bcrypt = require('bcrypt');
+      let result = bcrypt.compareSync(pass, user.password);
+      if(result) {
+        // console.log("match")
+        return true;
+      } else{
+        // console.log("pass not match")
+        return false;
+      }
+    } else {
+      // console.log("user not find")
+      return false;
+    }
   }
 
-  function getUserByName(userName) {
-    return userTemplates.find((u) => u.name === userName)
+  function isUserAvailable(userId) {
+    return getAvailableUsers().some((u) => u.id === userId)
+  }
+
+  function getUserById(userId) {
+    return userTemplates.find((u) => u.id === userId)
   }
 
   function getUserByClientId(clientId) {
@@ -48,8 +67,9 @@ module.exports = function () {
     registerClient,
     removeClient,
     getAvailableUsers,
+    login,
     isUserAvailable,
-    getUserByName,
+    getUserById,
     getUserByClientId
   }
 }

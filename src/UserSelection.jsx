@@ -37,7 +37,7 @@ export default class UserSelection extends React.Component {
   }
 
   handleSelection(selectedUser) {
-    this.props.register(selectedUser.name)
+    this.props.register(selectedUser.id)
   }
 
   renderUserItems() {
@@ -49,14 +49,14 @@ export default class UserSelection extends React.Component {
           autoFocus
           button
           onClick={() => this.handleSelection(user)}
-          key={user.name}
+          key={user.id}
         >
           <ListItemAvatar>
             <Avatar src={user.image} alt="" className={useStyles.avatar}>
               {/* <PersonIcon /> */}
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary={user.name} secondary={user.statusText} />
+          <ListItemText primary={user.id} secondary={user.statusText} />
         </ListItem>
       ))
     }

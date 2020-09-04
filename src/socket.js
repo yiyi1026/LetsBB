@@ -46,6 +46,10 @@ export default function () {
     socket.emit('availableUsers', null, cb)
   }
 
+  function login(userId, password, cb) {
+    socket.emit('login', {userId, password}, cb)
+  }
+
   return {
     register,
     join,
@@ -53,6 +57,7 @@ export default function () {
     message,
     getChatrooms,
     getAvailableUsers,
+    login,
     registerHandler,
     unregisterHandler
   }

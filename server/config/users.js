@@ -3,18 +3,16 @@ module.exports = [
     name: 'Sawako',
     lastName: 'Kuronuma',
     statusText: 'yoyohe',
-    image: 'users/Sawako.png'
+    id: 'yiyi1026',
+    image: 'users/Sawako.png',
+    password: '$2b$10$nuCfFkXkH3G5a9cJw2qKGeHqw216tj4c.xcd/.jpfzpfrsxtlElmW'
   },
   {
     name: 'Bowser',
     lastName: 'S',
+    id: 'sigosy',
     statusText: 'My precious',
-    image: 'users/Bowser.png'
-  },
-  {
-    name: 'Block',
-    lastName: 'Battle',
-    statusText: 'Look at me!',
-    image: 'users/Block.png'
+    image: 'users/Bowser.png',
+    password: '$2b$10$nuCfFkXkH3G5a9cJw2qKGeHqw216tj4c.xcd/.jpfzpfrsxtlElmW'
   }
 ]

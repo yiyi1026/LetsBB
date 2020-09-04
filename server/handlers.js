@@ -55,10 +55,10 @@ function makeHandleEvent(client, clientManager, chatroomManager) {
 module.exports = function (client, clientManager, chatroomManager) {
   const handleEvent = makeHandleEvent(client, clientManager, chatroomManager)
 
-  function handleRegister(userName, callback) {
-    if (!clientManager.isUserAvailable(userName)) return callback('user is not available')
+  function handleRegister(userId, callback) {
+    if (!clientManager.isUserAvailable(userId)) return callback('user is not available')
 
-    const user = clientManager.getUserByName(userName)
+    const user = clientManager.getUserById(userId)
     clientManager.registerClient(client, user)
 
     return callback(null, user)
@@ -119,6 +119,11 @@ module.exports = function (client, clientManager, chatroomManager) {
     return callback(null, clientManager.getAvailableUsers())
   }
 
+  function handleLogin({ userId, password } = {
+  }, callback) {
+    return callback(null, clientManager.login(userId, password))
+  }
+
   function handleDisconnect() {
     // remove user profile
     clientManager.removeClient(client)
@@ -133,6 +138,7 @@ module.exports = function (client, clientManager, chatroomManager) {
     handleMessage,
     handleGetChatrooms,
     handleGetAvailableUsers,
+    handleLogin,
     handleDisconnect
   }
 }
