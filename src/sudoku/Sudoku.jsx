@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
-import Cell from './Cell'
 import { Box } from '@material-ui/core'
+
+import Cell from './Cell'
 
 export default function Sudoku(props) {
 
@@ -27,10 +28,11 @@ export default function Sudoku(props) {
     } 
 
     return (
-        <div width="100%">
-            <Box width="100%" display="flex" flexDirection="column">
+        <div width="100%" style={{ height: 600 }}>
+
+            <Box style={{ width: 500, height: 450 }} display="flex" flexDirection="column">
                 {[...Array(9).keys()].map(x => {
-                    return <Box key={"row"+x} display="flex" flexDirection="row" width="100%"  justifyContent="center">
+                    return <Box key={"row"+x} display="flex" flexDirection="row" width="100%" height="100%" justifyContent="center">
                         {[...Array(9).keys()].map(y => {
                             return <Cell className="column" 
                                     key={y} 

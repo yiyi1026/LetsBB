@@ -1,16 +1,17 @@
-import React from 'react'
 import { Box } from '@material-ui/core'
+import React from 'react'
 
 export default function Cell(props) {
-    let value = props.value
-    let onClick = props.onClick
+    let {value, onClick, selected} = props
     let bgcolor = "white"
-    if(props.selected){
+    if(selected){
         bgcolor = "primary.main"
     }
     return (
-        <Box width={1/9} onClick={onClick} bgcolor={bgcolor}>
+        <Box width={1/9} onClick={onClick} bgcolor={bgcolor}
+            display="flex" width={1 / 9} justifyContent="center" alignItems="center">
             {value}
         </Box>
     )
+
 }
