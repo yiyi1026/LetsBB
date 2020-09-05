@@ -4,7 +4,7 @@ import { Box } from '@material-ui/core'
 import Cell from './Cell'
 // Hook
 const shiftNumberKeys = [
-  "!", "@", "#", "$", "%", "^", "&", "*", "("
+  '!', '@', '#', '$', '%', '^', '&', '*', '('
 ];
 
 function useKeyPress() {
@@ -12,7 +12,7 @@ function useKeyPress() {
     '6', '7', '8', '9'] + shiftNumberKeys
   
   // State for keeping track of whether key is pressed
-  const [numKeyPressed, setNumKeyPressed] = useState("");
+  const [numKeyPressed, setNumKeyPressed] = useState('');
 
   // If pressed key is our target key then set to true
   function downHandler({ key }) {
@@ -66,12 +66,12 @@ export default function Sudoku(props) {
     setSelected([x, y])
   }
 
-  const transpose = ([x, y]) => {
-    return [
-            Math.floor(x / 3) * 3 + Math.floor(y / 3),
-            y % 3 + x % 3 * 3
-          ]
-  }
+  // const transpose = ([x, y]) => {
+  //   return [
+  //           Math.floor(x / 3) * 3 + Math.floor(y / 3),
+  //           y % 3 + x % 3 * 3
+  //         ]
+  // }
 
   const isPeer = ([x,y]) => {
     return x == selected[0] || 
@@ -81,7 +81,6 @@ export default function Sudoku(props) {
   }
 
   const isFixed = ([x,y]) => {
-    [x,y] = transpose([x,y])
     return initGame[x][y] > 0 
   }
 
@@ -89,11 +88,9 @@ export default function Sudoku(props) {
   
 
   const getNewGame = game.map((el, idx) => {
-    let transSelected = transpose(selected)
-    
-    if (idx === transSelected[0]) {
+    if (idx === selected[0]) {
       return el.map((item, index) => {
-        if (index === transSelected[1] && !isFixed(selected)){
+        if (index === selected[1] && !isFixed(selected)){
           return numberKeyPressed
         }
         return item
@@ -107,20 +104,19 @@ export default function Sudoku(props) {
     console.log(tentativeValues)
     let ret = { ...tentativeValues };
     let num = shiftNumberKeys.indexOf(numberKeyPressed) + 1
-    let transSelected = transpose(selected)
-    if(transSelected[0] > 0 && transSelected[1] > 0){
-      if(action === "update"){
-        if(ret[transSelected]){
-          if(ret[transSelected].has(num)){
-            ret[transSelected].delete(num)
+    if(selected[0] > 0 && selected[1] > 0 && !isFixed(selected)){
+      if(action === 'update'){
+        if(ret[selected]){
+          if(ret[selected].has(num)){
+            ret[selected].delete(num)
           } else{
-            ret[transSelected].add(num)
+            ret[selected].add(num)
           }
         } else{
-          ret[transSelected] = new Set([num])
+          ret[selected] = new Set([num])
         }
-      } else if ( action === "clear" ){
-        delete ret[transSelected]
+      } else if ( action === 'clear' ){
+        delete ret[selected]
       }
     }
     return ret
@@ -130,9 +126,9 @@ export default function Sudoku(props) {
     console.log(numberKeyPressed, selected)
 
     if(shiftNumberKeys.includes(numberKeyPressed)){
-      setTentativeValues(getTentativeValues("update"))
+      setTentativeValues(getTentativeValues('update'))
     } else {
-      setTentativeValues(getTentativeValues("clear"))
+      setTentativeValues(getTentativeValues('clear'))
       setGame(getNewGame)
     }
   }, [numberKeyPressed])
@@ -148,146 +144,30 @@ export default function Sudoku(props) {
   }
 
   return (
-    <div width="100%" style={{ height: 600 }}>
-      <Box style={{ width: 500, height: 450 }} display="flex" 
-            flexDirection="column" border={1} borderColor="text.disabled">
+    <div width='100%' style={{ height: 600 }}>
+      <Box style={{ width: 500, height: 450 }} display='flex' 
+            flexDirection='column' border={1} borderColor='text.disabled'>
         {[...Array(9).keys()].map(x => {
-          return <Box key={"row" + x} 
-                      display="flex" flexDirection="row" 
-                      width="100%" height="100%" 
-                      justifyContent="center">
+          return <Box key={'row' + x} 
+                      display='flex' flexDirection='row' 
+                      width='100%' height='100%' 
+                      justifyContent='center'>
             {[...Array(9).keys()].map(y => {
-              let [trans_x, trans_y] = transpose([x, y])
-              return <Cell className="column"
+              return <Cell className='column'
                 key={y}
                 x={x}
                 y={y}
-                value={getValue([trans_x,trans_y])}
+                value={getValue([x,y])}
                 onClick={() => { selectCell([x, y]); }}
                 selected={x === selected[0] && y === selected[1]}
                 isFixed={isFixed([x,y])}
                 isPeer={isPeer([x,y]) }
-                isTentative={[trans_x,trans_y] in tentativeValues}
+                isTentative={[x,y] in tentativeValues}
               />
             })}
           </Box>
         })}
       </Box>
-
-
-      {/* <Box style={{ width: 474, height: 474 }} border={1}
-          display="flex" flexWrap="wrap">
-          <Box border={1} style={{ width: 156, height: 156 }}
-            display="flex" flexWrap="wrap">
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">1</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">2</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">3</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">4</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">5</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">6</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">7</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">8</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">9</Box>
-          </Box>
-          <Box border={1} style={{ width: 156, height: 156 }}
-            display="flex" flexWrap="wrap">
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">1</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">2</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">3</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">4</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">5</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">6</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">7</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">8</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">9</Box>
-          </Box>
-          <Box border={1} style={{ width: 156, height: 156 }}
-            display="flex" flexWrap="wrap">
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">1</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">2</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">3</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">4</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">5</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">6</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">7</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">8</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">9</Box>
-          </Box>
-
-          <Box border={1} style={{ width: 156, height: 156 }}
-            display="flex" flexWrap="wrap">
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">1</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">2</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">3</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">4</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">5</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">6</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">7</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">8</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">9</Box>
-          </Box>
-          <Box border={1} style={{ width: 156, height: 156 }}
-            display="flex" flexWrap="wrap">
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">1</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">2</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">3</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">4</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">5</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">6</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">7</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">8</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">9</Box>
-          </Box>
-          <Box border={1} style={{ width: 156, height: 156 }}
-            display="flex" flexWrap="wrap">
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">1</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">2</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">3</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">4</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">5</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">6</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">7</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">8</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">9</Box>
-          </Box>
-
-          <Box border={1} style={{ width: 156, height: 156 }}
-            display="flex" flexWrap="wrap">
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">1</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">2</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">3</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">4</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">5</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">6</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">7</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">8</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">9</Box>
-          </Box>
-          <Box border={1} style={{ width: 156, height: 156 }}
-            display="flex" flexWrap="wrap">
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">1</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">2</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">3</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">4</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">5</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">6</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">7</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">8</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">9</Box>
-          </Box>
-          <Box border={1} style={{ width: 156, height: 156 }}
-            display="flex" flexWrap="wrap">
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">1</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">2</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">3</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">4</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">5</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">6</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">7</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">8</Box>
-            <Box border={1} width={50} display="flex" justifyContent="center" alignItems="center" borderColor="text.disabled">9</Box>
-          </Box>
-        </Box> */}
     </div>
   );
 
