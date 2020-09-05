@@ -2,18 +2,23 @@ import React, { useState, useEffect } from 'react'
 import {
   Box, Table, TableBody, TableCell,
   TableContainer, TableRow, Paper,
-  LinearProgress
+  LinearProgress, Modal
 } from '@material-ui/core'
 
 import Cell from './Cell'
+import SudokuModal from './SudokuModal'
+
 // Hook
 const shiftNumberKeys = [
   '!', '@', '#', '$', '%', '^', '&', '*', '('
 ];
+const otherKeys = [
+  'Backspace'
+]
 
 function useKeyPress() {
   let listening_keys = ['1', '2', '3', '4', '5',
-    '6', '7', '8', '9'] + shiftNumberKeys
+    '6', '7', '8', '9'] + shiftNumberKeys + otherKeys
 
   // State for keeping track of whether key is pressed
   const [numKeyPressed, setNumKeyPressed] = useState('');
@@ -59,7 +64,7 @@ export default function Sudoku(props) {
     [0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
 
-  const initGame = [
+  const initGame3 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 9],
     [2, 0, 0, 0, 0, 0, 0, 8, 0],
     [6, 0, 0, 9, 4, 8, 5, 0, 0],
@@ -71,16 +76,16 @@ export default function Sudoku(props) {
     [9, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
 
-  const initGame3 = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [2, 2, 0, 2, 2, 2, 2, 2, 2],
-    [3, 0, 3, 3, 3, 3, 3, 3, 3],
-    [4, 4, 4, 4, 4, 0, 4, 4, 4],
-    [5, 0, 5, 5, 0, 5, 5, 5, 5],
-    [6, 6, 6, 6, 6, 6, 6, 6, 6],
-    [7, 7, 7, 7, 7, 7, 7, 7, 7],
-    [8, 0, 8, 8, 0, 8, 8, 8, 8],
-    [9, 9, 9, 9, 9, 9, 9, 9, 9]
+  const initGame = [
+    [0, 4, 5, 1, 8, 6, 7, 2, 9],
+    [9, 8, 1, 3, 7, 2, 4, 6, 5],
+    [2, 6, 7, 9, 5, 4, 1, 8, 3],
+    [8, 7, 6, 2, 3, 9, 5, 1, 4],
+    [1, 5, 2, 7, 4, 8, 9, 3, 6],
+    [4, 9, 3, 6, 1, 5, 2, 7, 8],
+    [5, 2, 4, 8, 6, 7, 3, 9, 1],
+    [6, 1, 9, 4, 2, 3, 8, 5, 7],
+    [7, 3, 8, 5, 9, 1, 6, 4, 2]
   ];
 
   const [game, setGame] = useState(initGame);
@@ -114,12 +119,69 @@ export default function Sudoku(props) {
   }
 
   const [statistic, setStatistic] = useState(() => getStatistic(game));
+  const [conflicts, setConflicts] = useState(() => new Set());
+  const [gameComplete, setGameComplete] = useState(false);
 
-  const isPeer = ([x, y]) => {
-    return x == selected[0] ||
-      y == selected[1] ||
-      Math.floor(x / 3) == Math.floor(selected[0] / 3) &&
-      Math.floor(y / 3) == Math.floor(selected[1] / 3)
+  const isPeer = ([x, y], [a, b]) => {
+    if (x == a && y == b) {
+      return false
+    }
+    return x == a ||
+      y == b ||
+      Math.floor(x / 3) == Math.floor(a / 3) &&
+      Math.floor(y / 3) == Math.floor(b / 3)
+  }
+
+  const checkConflict = (g) => {
+    let ret = new Set()
+    g.forEach((x, idx) => {
+      x.forEach((y, idy) => {
+        if (hasConflict([idx, idy], g)) {
+          ret.add(idx * 10 + idy)
+        }
+      })
+    })
+    return ret
+  }
+
+  const hasConflict = ([x, y], g) => {
+    const v = g[x][y]
+    if (v == 0) {
+      return false
+    }
+    for (let i = 0; i < 9; i++) {
+      if (i == y) {
+        continue
+      }
+      if (v == g[x][i]) {
+        return true
+      }
+    }
+    for (let i = 0; i < 9; i++) {
+      if (i == x) {
+        continue
+      }
+      if (v == g[i][y]) {
+        return true
+      }
+    }
+    for (let i = 0; i < 3; i++) {
+      let ii = Math.floor(x / 3) * 3 + i
+      for (let j = 0; j < 3; j++) {
+        let jj = Math.floor(y / 3) * 3 + j
+        if (ii == x && jj == y) {
+          continue
+        }
+        if (v == g[ii][jj]) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  const isConflict = ([x, y]) => {
+    return conflicts.has(x * 10 + y)
   }
 
   const isFixed = ([x, y]) => {
@@ -134,7 +196,7 @@ export default function Sudoku(props) {
         if (index === selected[1] && !isFixed(selected)) {
 
           // console.log(el, idx, selected)
-          return parseInt(numberKeyPressed)
+          return parseInt(numberKeyPressed) || 0
         }
         return item
       })
@@ -164,6 +226,21 @@ export default function Sudoku(props) {
     return ret
   }
 
+  const isGameComplete = (g, c) => {
+    let unfill = g.find(r => {
+      r.find(cell => {
+        cell === 0
+      })
+    })
+    if (unfill === 0) {
+      return false
+    }
+    if (c.size > 0) {
+      return false
+    }
+    return true
+  }
+
   useEffect(() => {
     if (numberKeyPressed) {
       if (shiftNumberKeys.includes(numberKeyPressed)) {
@@ -171,7 +248,9 @@ export default function Sudoku(props) {
       } else {
         setTentativeValues(getTentativeValues('clear'))
         setGame(getNewGame)
-        setStatistic(getStatistic(getNewGame));
+        setStatistic(getStatistic(getNewGame))
+        setConflicts(checkConflict(getNewGame))
+        setGameComplete(isGameComplete(getNewGame, checkConflict(getNewGame)))
       }
     }
 
@@ -188,54 +267,66 @@ export default function Sudoku(props) {
   }
 
   return (
-    <Box display='flex' justifyContent='space-around'>
-      <div width='100%' style={{ height: 600 }}>
-        <Box style={{ width: 500, height: 450 }} display='flex'
-          flexDirection='column' border={0  } borderColor='text.disabled'>
-          {[...Array(9).keys()].map(x => {
-            return <Box key={'row' + x}
-              display='flex' flexDirection='row'
-              width='100%' height='100%'
-              justifyContent='center'>
-              {[...Array(9).keys()].map(y => {
-                return <Cell className='column'
-                  key={y}
-                  x={x}
-                  y={y}
-                  value={getValue([x, y])}
-                  onClick={() => { selectCell([x, y]); }}
-                  selected={x === selected[0] && y === selected[1]}
-                  isFixed={isFixed([x, y])}
-                  isPeer={isPeer([x, y])}
-                  isTentative={[x, y] in tentativeValues}
-                />
-              })}
-            </Box>
-          })}
-        </Box>
-      </div>
-      
-      <div>
-        <TableContainer component={Paper}>
-          <Table aria-label="custom table">
-            <TableBody>
-              {[...Array(9).keys()].map((row) => {
-                row += 1
-                return <TableRow key={row}>
-                  <TableCell component="th" scope="row">
-                    {row}
-                  </TableCell>
-                  <TableCell style={{ width: 160 }} align="right">
-                    <LinearProgress variant="determinate" value={Math.min(statistic[row] / 9 * 100, 100)} />
+    <div>
+      <Box display='flex' justifyContent='space-around'>
+        <div width='100%' style={{ height: 600 }}>
+          <Box style={{ width: 500, height: 450 }} display='flex'
+            flexDirection='column' border={0} borderColor='text.disabled'>
+            {[...Array(9).keys()].map(x => {
+              return <Box key={'row' + x}
+                display='flex' flexDirection='row'
+                width='100%' height='100%'
+                justifyContent='center'>
+                {[...Array(9).keys()].map(y => {
+                  return <Cell className='column'
+                    key={y}
+                    x={x}
+                    y={y}
+                    value={getValue([x, y])}
+                    onClick={() => { selectCell([x, y]); }}
+                    selected={x === selected[0] && y === selected[1]}
+                    isFixed={isFixed([x, y])}
+                    isPeer={isPeer([x, y], selected)}
+                    isTentative={[x, y] in tentativeValues}
+                    isConflict={isConflict([x, y])}
+                  />
+                })}
+              </Box>
+            })}
+          </Box>
+        </div>
 
-                  </TableCell>
-                </TableRow>
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <div>
+          <TableContainer component={Paper}>
+            <Table aria-label="custom table">
+              <TableBody>
+                {[...Array(9).keys()].map((row) => {
+                  row += 1
+                  return <TableRow key={row}>
+                    <TableCell component="th" scope="row">
+                      {row}
+                    </TableCell>
+                    <TableCell style={{ width: 160 }} align="right">
+                      <LinearProgress variant="determinate" value={Math.min(statistic[row] / 9 * 100, 100)} />
+
+                    </TableCell>
+                  </TableRow>
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </Box>
+      <div>
+        <SudokuModal
+          open={gameComplete}
+          onClose={() => setGameComplete(false)}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        />
+
       </div>
-    </Box>
+    </div>
   );
 
 

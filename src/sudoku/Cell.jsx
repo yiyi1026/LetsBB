@@ -6,7 +6,8 @@ import React from 'react'
 
 export default function Cell(props) {
   let { x, y, value, onClick, selected,
-    isPeer, isFixed, isTentative } = props
+    isPeer, isFixed, isTentative,
+    isConflict } = props
   let bgcolor = 'white'
   let color = 'info.main'
   let fontSize = 32
@@ -22,6 +23,9 @@ export default function Cell(props) {
   }
   if (isFixed) {
     color = 'text.primary'
+  }
+  if (isConflict){
+    color = 'error.main'
   }
   if (isTentative) {
     color = 'text.secondary'
