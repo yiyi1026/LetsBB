@@ -47,7 +47,31 @@ function useKeyPress() {
 }
 export default function Sudoku(props) {
 
+  const initGame1 = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ];
+
   const initGame = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 9],
+    [2, 0, 0, 0, 0, 0, 0, 8, 0],
+    [6, 0, 0, 9, 4, 8, 5, 0, 0],
+    [0, 0, 1, 0, 0, 6, 3, 4, 5],
+    [0, 0, 0, 0, 9, 0, 0, 0, 0],
+    [3, 7, 4, 5, 0, 0, 9, 0, 0],
+    [0, 0, 8, 6, 1, 2, 0, 0, 3],
+    [0, 2, 0, 0, 0, 0, 0, 0, 6],
+    [9, 0, 0, 0, 0, 0, 0, 0, 0]
+  ];
+
+  const initGame3 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1],
     [2, 2, 0, 2, 2, 2, 2, 2, 2],
     [3, 0, 3, 3, 3, 3, 3, 3, 3],
@@ -167,7 +191,7 @@ export default function Sudoku(props) {
     <Box display='flex' justifyContent='space-around'>
       <div width='100%' style={{ height: 600 }}>
         <Box style={{ width: 500, height: 450 }} display='flex'
-          flexDirection='column' border={1} borderColor='text.disabled'>
+          flexDirection='column' border={0  } borderColor='text.disabled'>
           {[...Array(9).keys()].map(x => {
             return <Box key={'row' + x}
               display='flex' flexDirection='row'
@@ -190,6 +214,7 @@ export default function Sudoku(props) {
           })}
         </Box>
       </div>
+      
       <div>
         <TableContainer component={Paper}>
           <Table aria-label="custom table">
