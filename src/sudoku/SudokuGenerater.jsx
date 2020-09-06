@@ -104,7 +104,7 @@ const fillGrid = () => {
 
 export const generate = () => {
   let game = fillGrid()
-  let attempts = 30
+  let attempts = 15
   for (; attempts > 0; ) {
     // Select a random cell that is not already empty
     let row = Math.floor(Math.random() * 9)

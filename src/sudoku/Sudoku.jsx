@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import {
   Box, Table, TableBody, TableCell,
   TableContainer, TableRow, Paper,
-  LinearProgress, Button
+  LinearProgress, Button, Chip
 } from '@material-ui/core'
 
 import Cell from './Cell'
@@ -271,7 +271,8 @@ export default function Sudoku(props) {
       <Box display='flex' justifyContent='space-around'>
         <div width='100%' style={{ height: 600 }}>
           <Box style={{ width: 500, height: 450 }} display='flex'
-            flexDirection='column' border={0} borderColor='text.disabled'>
+            flexDirection='column' border={4} borderColor='text.secondary'
+            borderRadius={8}>
             {[...Array(9).keys()].map(x => {
               return <Box key={'row' + x}
                 display='flex' flexDirection='row'
@@ -304,11 +305,15 @@ export default function Sudoku(props) {
                   row += 1
                   return <TableRow key={row}>
                     <TableCell component="th" scope="row">
-                      {row}
+                      <Box fontSize={20}>
+                        <strong>{row}</strong>
+                      </Box>
                     </TableCell>
                     <TableCell style={{ width: 160 }} align="right">
                       <LinearProgress variant="determinate" value={Math.min(statistic[row] / 9 * 100, 100)} />
-
+                    </TableCell>
+                    <TableCell >
+                      <Chip label={statistic[row]} />
                     </TableCell>
                   </TableRow>
                 })}
@@ -339,7 +344,11 @@ export default function Sudoku(props) {
             variant="contained"
           >Generate</Button>
           <Button
-            onClick={() => solve(initGame)}
+            onClick={() => solve(initGame , (x)=> {
+              setGame(x)
+              setStatistic(getStatistic(x))
+              setGameComplete(isGameComplete(x, checkConflict(x)))
+            })}
             color='secondary'
             variant="contained"
           >Solve</Button>
@@ -347,7 +356,7 @@ export default function Sudoku(props) {
             onClick={() => console.log(initGame)}
             color='secondary'
             variant="contained"
-          >Check</Button>
+          >Test</Button>
         </Box>
       </div>
     </div>

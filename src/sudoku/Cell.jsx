@@ -49,7 +49,9 @@ export default function Cell(props) {
     <Box onClick={onClick} onChange={handleChange} bgcolor={bgcolor}
       display='flex' width={1 / 9} justifyContent='center' alignItems='center'
       border={1} borderTop={borderTop} borderBottom={borderBottom}
-      borderLeft={borderLeft} borderRight={borderRight} borderColor='text.secondary' fontSize={fontSize} >
+      borderLeft={borderLeft} borderRight={borderRight} 
+      borderColor='text.secondary' fontSize={fontSize} 
+      borderRadius={1} >
       <Box color={color}>
         <span style={{
           display: 'block',

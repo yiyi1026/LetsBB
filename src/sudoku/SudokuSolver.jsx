@@ -10,7 +10,7 @@ export const checkGrid = (game) => {
   return true;
 }
 
-export const solve = (game) => {
+export const solve = (game, setGame) => {
   let idx,idy
   for (let i = 0; i < 81; i++) {
     idx = Math.floor(i / 9)
@@ -37,9 +37,12 @@ export const solve = (game) => {
         if (checkGrid(game)) {
           console.log("returning ")
           console.log(game)
+          if(setGame){
+            setGame(game)
+          }
           return true
         } else {
-          if (solve(game)) {
+          if (solve(game, setGame)) {
             return true
           }
         }
