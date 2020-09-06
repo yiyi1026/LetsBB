@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react'
 import {
   Box, Table, TableBody, TableCell,
   TableContainer, TableRow, Paper,
-  LinearProgress, Modal
+  LinearProgress, Button
 } from '@material-ui/core'
 
 import Cell from './Cell'
 import SudokuModal from './SudokuModal'
+import { solve } from './SudokuSolver'
+import { generate } from './SudokuGenerater'
+import { Timer } from './Timer'
 
 // Hook
 const shiftNumberKeys = [
@@ -64,7 +67,7 @@ export default function Sudoku(props) {
     [0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
 
-  const initGame3 = [
+  const initGame2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 9],
     [2, 0, 0, 0, 0, 0, 0, 8, 0],
     [6, 0, 0, 9, 4, 8, 5, 0, 0],
@@ -76,17 +79,17 @@ export default function Sudoku(props) {
     [9, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
 
-  const initGame = [
-    [0, 4, 5, 1, 8, 6, 7, 2, 9],
-    [9, 8, 1, 3, 7, 2, 4, 6, 5],
-    [2, 6, 7, 9, 5, 4, 1, 8, 3],
-    [8, 7, 6, 2, 3, 9, 5, 1, 4],
-    [1, 5, 2, 7, 4, 8, 9, 3, 6],
-    [4, 9, 3, 6, 1, 5, 2, 7, 8],
-    [5, 2, 4, 8, 6, 7, 3, 9, 1],
-    [6, 1, 9, 4, 2, 3, 8, 5, 7],
-    [7, 3, 8, 5, 9, 1, 6, 4, 2]
-  ];
+  const [initGame, setInitGame] = useState([
+    [0, 4, 0, 0, 0, 9, 0, 0, 3],
+    [3, 0, 8, 0, 6, 0, 5, 0, 4],
+    [0, 0, 5, 8, 3, 0, 2, 7, 0],
+    [4, 3, 2, 9, 0, 1, 0, 0, 7],
+    [6, 8, 0, 0, 7, 0, 0, 2, 9],
+    [7, 0, 0, 4, 0, 6, 3, 1, 8],
+    [0, 9, 6, 0, 4, 7, 1, 0, 0],
+    [1, 0, 3, 0, 9, 0, 7, 0, 5],
+    [5, 0, 0, 2, 0, 0, 0, 8, 0]
+  ])
 
   const [game, setGame] = useState(initGame);
 
@@ -208,7 +211,7 @@ export default function Sudoku(props) {
   const getTentativeValues = (action) => {
     let ret = { ...tentativeValues };
     let num = shiftNumberKeys.indexOf(numberKeyPressed) + 1
-    if (selected[0] > 0 && selected[1] > 0 && !isFixed(selected)) {
+    if (selected[0] > -1 && selected[1] > -1 && !isFixed(selected)) {
       if (action === 'update') {
         if (ret[selected]) {
           if (ret[selected].has(num)) {
@@ -227,18 +230,15 @@ export default function Sudoku(props) {
   }
 
   const isGameComplete = (g, c) => {
-    let unfill = g.find(r => {
-      r.find(cell => {
-        cell === 0
-      })
-    })
-    if (unfill === 0) {
-      return false
-    }
     if (c.size > 0) {
       return false
     }
-    return true
+    let unfill = g.some(r =>
+      r.some(c =>
+        c === 0
+      )
+    )
+    return !unfill
   }
 
   useEffect(() => {
@@ -324,7 +324,31 @@ export default function Sudoku(props) {
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         />
-
+        <Timer />
+        <Box>
+          <Button
+            onClick={() => {
+              let newGame = generate()
+              console.log(newGame)
+              setInitGame(newGame)
+              setGame(newGame)
+              setStatistic(getStatistic(newGame))
+              setGameComplete(isGameComplete(newGame, checkConflict(newGame)))
+            }}
+            color='secondary'
+            variant="contained"
+          >Generate</Button>
+          <Button
+            onClick={() => solve(initGame)}
+            color='secondary'
+            variant="contained"
+          >Solve</Button>
+          <Button
+            onClick={() => console.log(initGame)}
+            color='secondary'
+            variant="contained"
+          >Check</Button>
+        </Box>
       </div>
     </div>
   );

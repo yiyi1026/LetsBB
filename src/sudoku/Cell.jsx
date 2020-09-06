@@ -32,14 +32,14 @@ export default function Cell(props) {
     fontSize = 18
   }
   if (x % 3 == 0) {
-    borderTop = 2
+    borderTop = 5
   } else if (x == 8) {
-    borderBottom = 2
+    borderBottom = 5
   }
   if (y % 3 == 0) {
-    borderLeft = 2
+    borderLeft = 5
   } else if (y == 8) {
-    borderRight = 2
+    borderRight = 5
   }
   const handleChange = (e) => {
     console.log('onchange')
