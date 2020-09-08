@@ -1,11 +1,11 @@
-import React from "react"
-import { Link } from "react-router-dom"
-import styled from "styled-components"
-import Avatar from "@material-ui/core/Avatar"
-import { Icon } from "@material-ui/core"
+import { Icon } from '@material-ui/core'
+import Avatar from '@material-ui/core/Avatar'
+import React from 'react'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
-import FullScreen from "./FullScreen"
-import Overlay from "./Overlay"
+import FullScreen from './FullScreen'
+import Overlay from './Overlay'
 
 const ContentWrapper = styled.div`
   position: relative;
@@ -70,18 +70,18 @@ function renderAvatar(user) {
   const props = user
     ? { src: user.image }
     : {
-        icon: (
-          <Icon style={{ fontSize: 60 }} className="material-icons">
-            {"perm_identity"}
-          </Icon>
-        ),
-      }
+      icon: (
+        <Icon style={{ fontSize: 60 }} className="material-icons">
+          perm_identity
+        </Icon>
+      )
+    }
 
   return <Avatar size={100} {...props} />
 }
 
 function fullName(user) {
-  return user ? `${user.name} ${user.lastName}` : "Who are you?"
+  return user ? `${user.name} ${user.lastName}` : 'Who are you?'
 }
 
 export default ({ children, user }) => (
@@ -92,8 +92,12 @@ export default ({ children, user }) => (
           <Relative>
             <Sticky>
               <AvatarWrapper>
-                <Link to="/user">{renderAvatar(user)}</Link>
-                <UserName> {fullName(user)} </UserName>
+                <Link to="/login">{renderAvatar(user)}</Link>
+                <UserName>
+                  {' '}
+                  {fullName(user)}
+                  {' '}
+                </UserName>
               </AvatarWrapper>
             </Sticky>
           </Relative>

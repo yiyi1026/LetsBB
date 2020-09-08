@@ -1,29 +1,25 @@
-import React from "react"
-import ReactDOM from "react-dom"
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 
-import Root from "./Root"
+import Root from './Root'
 import Sudoku from './sudoku/Sudoku'
-
-import { BrowserRouter, Route} from 'react-router-dom'
-
 
 ReactDOM.render(
 
-    <BrowserRouter>
-        <Route
-            exact
-            path="/"
-            render={(props) => (
-                <Root />
-            )}
-        />
-        <Route
-            exact
-            path="/sudoku"
-            render={(props) => <Sudoku />}
-        />
-    </BrowserRouter>
+  <BrowserRouter>
+    <Route
+      exact
+      path="/sudoku"
+      render={() => <Sudoku />}
+    />
+    <Route
+      exact
+      path="/"
+      render={() => (
+        <Root />
+      )}
+    />
+  </BrowserRouter>,
 
-
-
-    , document.getElementById("root"))
+  document.getElementById('root'))

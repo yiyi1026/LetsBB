@@ -1,3 +1,4 @@
+import Link from '@material-ui/core/Link'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
@@ -6,11 +7,12 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Chatroom from './Chatroom'
 import Home from './Home'
 import Loader from './Loader'
+import Login from './Login'
 import MainLayout from './MainLayout'
 import socket from './socket'
-import Login from './Login'
 
 const theme = createMuiTheme({})
+const defaultName="Civ"
 
 class Root extends React.Component {
   constructor(props, context) {
@@ -27,18 +29,17 @@ class Root extends React.Component {
     this.onLeaveChatroom = this.onLeaveChatroom.bind(this)
     this.getChatrooms = this.getChatrooms.bind(this)
     this.register = this.register.bind(this)
-    this.renderUserSelectionOrRedirect = this.renderUserSelectionOrRedirect.bind(
-      this
-    )
-
+    this.join = this.join.bind(this)
     this.getChatrooms()
   }
 
   onEnterChatroom(chatroomName, onNoUserSelected, onEnterSuccess) {
+    console.log(this.state.user)
     if (!this.state.user) return onNoUserSelected()
 
     return this.state.client.join(chatroomName, (err, chatHistory) => {
       if (err) return console.error(err)
+      console.log(chatHistory)
       return onEnterSuccess(chatHistory)
     })
   }
@@ -60,25 +61,23 @@ class Root extends React.Component {
     const onRegisterResponse = (user) => this.setState({ isRegisterInProcess: false, user })
     this.setState({ isRegisterInProcess: true })
     this.state.client.register(name, (err, user) => {
-      if (err) return onRegisterResponse(null)
+      if (err) {
+        return onRegisterResponse(null)}
       return onRegisterResponse(user)
     })
   }
 
-  renderUserSelectionOrRedirect(renderUserSelection) {
-    if (this.state.user) {
-      return <Redirect to="/" />
-    }
-
-    return this.state.isRegisterInProcess ? <Loader /> : renderUserSelection()
+  async join(cb) {
+    const chatroomName = "invisible place"
+    return this.state.client.join(chatroomName, cb)
   }
 
   renderChatroomOrRedirect(chatroom, { history }) {
     if (!this.state.user) {
-      return <Redirect to="/" />
+      return <Redirect to="/login" />
     }
 
-    const { chatHistory } = history.location.state
+    const chatHistory = history.location.state?.chatHistory
 
     return (
       <Chatroom
@@ -101,50 +100,62 @@ class Root extends React.Component {
             {!this.state.chatrooms ? (
               <Loader />
             ) : (
-                <Switch>
-                  <Route
-                    exact
-                    path="/"
-                    render={(props) => (
-                      <Home
-                        user={this.state.user}
-                        chatrooms={this.state.chatrooms}
-                        onChangeUser={() => props.history.push('/login')}
-                        onEnterChatroom={(chatroomName) => this.onEnterChatroom(
-                          chatroomName,
-                          () => props.history.push('/login'),
-                          (chatHistory) => props.history.push({
-                            pathname: chatroomName,
-                            state: { chatHistory }
-                          })
-                        )}
+              <Switch>
+                <Route
+                  exact
+                  path="/login"
+                  render={(props) => {
+                    console.log('login page')
+                    const toChatroom = () => props.history.push(`/${defaultName}`)
+                    const onEnter = () => this.onEnterChatroom(
+                      defaultName,
+                      () => props.history.push('/login'),
+                      (chatHistory) => props.history.push({
+                        pathname: defaultName,
+                        state: { chatHistory }}))
+                    return (
+                      <Login
+                        clientLogin={this.state.client.login}
+                        close={toChatroom}
+                        register={(name) => this.register(name)}
+                        join={()=>this.join(()=>onEnter(name))}
+                        {...props}
                       />
-                    )}
-                  />
+                    )
+                  }}
+                />
+                {this.state.chatrooms.map((chatroom) => (
                   <Route
+                    key={chatroom.name}
                     exact
-                    path="/login"
-
-                    render={(props) => {
-                        const toHome = () => props.history.push('/')
-                        return <Login
-                                  clientLogin={this.state.client.login}
-                                  close={toHome}
-                                  register={(name) => this.register(name, toHome)}
-                                />
-                      }
-                    }
+                    path={`/${chatroom.name}`}
+                    render={(props) => this.renderChatroomOrRedirect(chatroom, props)}
                   />
-                  {this.state.chatrooms.map((chatroom) => (
-                    <Route
-                      key={chatroom.name}
-                      exact
-                      path={`/${chatroom.name}`}
-                      render={(props) => this.renderChatroomOrRedirect(chatroom, props)}
-                    />
-                  ))}
-                </Switch>
-              )}
+                ))}
+                <Route
+                  exact
+                  path="/"
+                  render={(props) => {
+                    if(!this.state.user){
+                      return <Redirect to="/login"/>
+                    }else{
+                      const chatroom = this.state.chatroom[0]
+                      return this.renderChatroomOrRedirect(this.state.chatrooms[0], props)
+                      // return (<Chatroom
+                      //   chatroom={chatroom}
+                      //   chatHistory={chatHistory}
+                      //   user={this.state.user}
+                      //   onLeave={() => this.onLeaveChatroom(chatroom.name, () => history.push('/'))}
+                      //   onSendMessage={(message, cb) => this.state.client.message(chatroom.name, message, cb)}
+                      //   registerHandler={this.state.client.registerHandler}
+                      //   unregisterHandler={this.state.client.unregisterHandler}
+                      //   />)
+                    }
+
+                  }}
+                />
+              </Switch>
+            )}
           </MainLayout>
         </ThemeProvider>
       </BrowserRouter>

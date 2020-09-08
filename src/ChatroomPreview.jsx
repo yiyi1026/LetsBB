@@ -1,5 +1,4 @@
-import { Paper } from '@material-ui/core'
-import { Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia } from '@material-ui/core'
+import { Card, CardActionArea, CardActions, CardContent, CardMedia, Paper, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import React from 'react'
 import styled from 'styled-components'
@@ -10,8 +9,8 @@ const Wrapper = styled.div`
 const useStyles = makeStyles({
   card: {},
   media: {
-    minHeight: 140,
-  },
+    height: 300
+  }
 })
 
 export default ({ chatroom, onEnter }) => {
@@ -22,9 +21,12 @@ export default ({ chatroom, onEnter }) => {
         <Card className={classes.card}>
           <CardActionArea>
             <CardMedia className={classes.media} image={chatroom.image} />
-            <CardContent></CardContent>
           </CardActionArea>
-          <CardActions>{chatroom.name}</CardActions>
+          <CardActions style={{ height: 50 }}>
+            <Typography variant="h5" component="h2">
+              {chatroom.name}
+            </Typography>
+          </CardActions>
         </Card>
       </Wrapper>
     </Paper>

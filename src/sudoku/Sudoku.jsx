@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import {
-  Box, Table, TableBody, TableCell,
-  TableContainer, TableRow, Paper,
-  LinearProgress, Button, Chip
-} from '@material-ui/core'
+import { Box,
+  Button,
+  Chip,
+  LinearProgress,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
 
 import Cell from './Cell'
+import { generate } from './SudokuGenerater'
 import SudokuModal from './SudokuModal'
 import { solve } from './SudokuSolver'
-import { generate } from './SudokuGenerater'
 import { Timer } from './Timer'
 
 // Hook
@@ -20,7 +25,7 @@ const otherKeys = [
 ]
 
 function useKeyPress() {
-  let listening_keys = ['1', '2', '3', '4', '5',
+  const listening_keys = ['1', '2', '3', '4', '5',
     '6', '7', '8', '9'] + shiftNumberKeys + otherKeys
 
   // State for keeping track of whether key is pressed
@@ -54,7 +59,6 @@ function useKeyPress() {
   return numKeyPressed;
 }
 export default function Sudoku(props) {
-
   const initGame1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -93,11 +97,9 @@ export default function Sudoku(props) {
 
   const [game, setGame] = useState(initGame);
 
-
   const [tentativeValues, setTentativeValues] = useState(new Map())
 
   const [selected, setSelected] = useState([-1, -1])
-
 
   const selectCell = ([x, y]) => {
     setSelected([x, y])
@@ -111,9 +113,9 @@ export default function Sudoku(props) {
   // }
 
   const getStatistic = (g) => {
-    let ret = new Map()
-    g.forEach(x => {
-      x.forEach(y => {
+    const ret = new Map()
+    g.forEach((x) => {
+      x.forEach((y) => {
         ret[y] = ret[y] + 1 || 1
       })
     })
@@ -129,14 +131,14 @@ export default function Sudoku(props) {
     if (x == a && y == b) {
       return false
     }
-    return x == a ||
-      y == b ||
-      Math.floor(x / 3) == Math.floor(a / 3) &&
-      Math.floor(y / 3) == Math.floor(b / 3)
+    return x == a
+      || y == b
+      || Math.floor(x / 3) == Math.floor(a / 3)
+      && Math.floor(y / 3) == Math.floor(b / 3)
   }
 
   const checkConflict = (g) => {
-    let ret = new Set()
+    const ret = new Set()
     g.forEach((x, idx) => {
       x.forEach((y, idy) => {
         if (hasConflict([idx, idy], g)) {
@@ -169,9 +171,9 @@ export default function Sudoku(props) {
       }
     }
     for (let i = 0; i < 3; i++) {
-      let ii = Math.floor(x / 3) * 3 + i
+      const ii = Math.floor(x / 3) * 3 + i
       for (let j = 0; j < 3; j++) {
-        let jj = Math.floor(y / 3) * 3 + j
+        const jj = Math.floor(y / 3) * 3 + j
         if (ii == x && jj == y) {
           continue
         }
@@ -183,13 +185,9 @@ export default function Sudoku(props) {
     return false
   }
 
-  const isConflict = ([x, y]) => {
-    return conflicts.has(x * 10 + y)
-  }
+  const isConflict = ([x, y]) => conflicts.has(x * 10 + y)
 
-  const isFixed = ([x, y]) => {
-    return initGame[x][y] > 0
-  }
+  const isFixed = ([x, y]) => initGame[x][y] > 0
 
   const numberKeyPressed = useKeyPress();
 
@@ -197,20 +195,18 @@ export default function Sudoku(props) {
     if (idx === selected[0]) {
       return el.map((item, index) => {
         if (index === selected[1] && !isFixed(selected)) {
-
           // console.log(el, idx, selected)
           return parseInt(numberKeyPressed) || 0
         }
         return item
       })
-    } else {
-      return el
     }
+    return el
   })
 
   const getTentativeValues = (action) => {
-    let ret = { ...tentativeValues };
-    let num = shiftNumberKeys.indexOf(numberKeyPressed) + 1
+    const ret = { ...tentativeValues };
+    const num = shiftNumberKeys.indexOf(numberKeyPressed) + 1
     if (selected[0] > -1 && selected[1] > -1 && !isFixed(selected)) {
       if (action === 'update') {
         if (ret[selected]) {
@@ -233,10 +229,8 @@ export default function Sudoku(props) {
     if (c.size > 0) {
       return false
     }
-    let unfill = g.some(r =>
-      r.some(c =>
-        c === 0
-      )
+    const unfill = g.some((r) => r.some((c) => c === 0
+    )
     )
     return !unfill
   }
@@ -253,7 +247,6 @@ export default function Sudoku(props) {
         setGameComplete(isGameComplete(getNewGame, checkConflict(getNewGame)))
       }
     }
-
   }, [numberKeyPressed])
 
   useEffect(() => {
@@ -268,18 +261,30 @@ export default function Sudoku(props) {
 
   return (
     <div>
-      <Box display='flex' justifyContent='space-around'>
-        <div width='100%' style={{ height: 600 }}>
-          <Box style={{ width: 500, height: 450 }} display='flex'
-            flexDirection='column' border={4} borderColor='text.secondary'
-            borderRadius={8}>
-            {[...Array(9).keys()].map(x => {
-              return <Box key={'row' + x}
-                display='flex' flexDirection='row'
-                width='100%' height='100%'
-                justifyContent='center'>
-                {[...Array(9).keys()].map(y => {
-                  return <Cell className='column'
+      <Box display="flex" justifyContent="space-around">
+        <div width="100%" style={{ height: 600 }}>
+          <Box
+            style={{ width: 600, height: 600 }}
+            display="flex"
+            flexDirection="column"
+            border={3}
+            borderColor="text.secondary"
+            borderRadius={5}
+            boxShadow={0}
+            elevation={0}
+          >
+            {[...Array(9).keys()].map((x) => (
+              <Box
+                key={`row${x}`}
+                display="flex"
+                flexDirection="row"
+                width="100%"
+                height="100%"
+                justifyContent="center"
+              >
+                {[...Array(9).keys()].map((y) => (
+                  <Cell
+                    className="column"
                     key={y}
                     x={x}
                     y={y}
@@ -291,9 +296,9 @@ export default function Sudoku(props) {
                     isTentative={[x, y] in tentativeValues}
                     isConflict={isConflict([x, y])}
                   />
-                })}
+                ))}
               </Box>
-            })}
+            ))}
           </Box>
         </div>
 
@@ -303,19 +308,21 @@ export default function Sudoku(props) {
               <TableBody>
                 {[...Array(9).keys()].map((row) => {
                   row += 1
-                  return <TableRow key={row}>
-                    <TableCell component="th" scope="row">
-                      <Box fontSize={20}>
-                        <strong>{row}</strong>
-                      </Box>
-                    </TableCell>
-                    <TableCell style={{ width: 160 }} align="right">
-                      <LinearProgress variant="determinate" value={Math.min(statistic[row] / 9 * 100, 100)} />
-                    </TableCell>
-                    <TableCell >
-                      <Chip label={statistic[row]} />
-                    </TableCell>
-                  </TableRow>
+                  return (
+                    <TableRow key={row}>
+                      <TableCell component="th" scope="row">
+                        <Box fontSize={20}>
+                          <strong>{row}</strong>
+                        </Box>
+                      </TableCell>
+                      <TableCell style={{ width: 160 }} align="right">
+                        <LinearProgress variant="determinate" value={Math.min(statistic[row] / 9 * 100, 100)} />
+                      </TableCell>
+                      <TableCell>
+                        <Chip label={statistic[row]} />
+                      </TableCell>
+                    </TableRow>
+                  )
                 })}
               </TableBody>
             </Table>
@@ -333,34 +340,41 @@ export default function Sudoku(props) {
         <Box>
           <Button
             onClick={() => {
-              let newGame = generate()
+              const newGame = generate()
               console.log(newGame)
               setInitGame(newGame)
               setGame(newGame)
               setStatistic(getStatistic(newGame))
               setGameComplete(isGameComplete(newGame, checkConflict(newGame)))
             }}
-            color='secondary'
+            color="secondary"
             variant="contained"
-          >Generate</Button>
+          >
+            Generate
+
+          </Button>
           <Button
-            onClick={() => solve(initGame , (x)=> {
+            onClick={() => solve(initGame, (x) => {
               setGame(x)
               setStatistic(getStatistic(x))
               setGameComplete(isGameComplete(x, checkConflict(x)))
             })}
-            color='secondary'
+            color="secondary"
             variant="contained"
-          >Solve</Button>
+          >
+            Solve
+
+          </Button>
           <Button
             onClick={() => console.log(initGame)}
-            color='secondary'
+            color="secondary"
             variant="contained"
-          >Test</Button>
+          >
+            Test
+
+          </Button>
         </Box>
       </div>
     </div>
   );
-
-
 }

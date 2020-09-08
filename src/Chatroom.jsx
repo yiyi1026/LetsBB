@@ -5,8 +5,8 @@ import {
   Button,
   Divider,
   Fab,
-  IconButton,
   Icon,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -15,8 +15,8 @@ import {
 } from '@material-ui/core'
 import { blue } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
+import CloseIcon from '@material-ui/icons/Close'
 import React from 'react'
-import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components'
 
 import Overlay from './Overlay'
@@ -104,21 +104,16 @@ export default class Chatroom extends React.Component {
     const { chatHistory } = props
 
     this.state = {
-      chatHistory,
+      chatHistory: chatHistory || {},
       input: '',
       unread: 0
     }
 
     this.onInput = this.onInput.bind(this)
-
     this.onMouseMove = this.onMouseMove.bind(this)
-
     this.onSendMessage = this.onSendMessage.bind(this)
-
     this.onMessageReceived = this.onMessageReceived.bind(this)
-
     this.updateChatHistory = this.updateChatHistory.bind(this)
-
     this.scrollChatToBottom = this.scrollChatToBottom.bind(this)
   }
 
@@ -198,9 +193,9 @@ export default class Chatroom extends React.Component {
           <Header>
             <Title>{this.props.chatroom.name}</Title>
 
-            <IconButton color="primary" onClick={this.props.onLeave}>
-             <CloseIcon/>
-            </IconButton>
+            {/* <IconButton color="primary" onClick={this.props.onLeave}>
+              <CloseIcon />
+            </IconButton> */}
           </Header>
 
           <ChatroomImage src={this.props.chatroom.image} alt="" />
@@ -212,7 +207,7 @@ export default class Chatroom extends React.Component {
               }}
             >
               <List>
-                {this.state.chatHistory.map(
+                {this.state.chatHistory?.map(
                   ({ user, message, time, event }, i) => [
                     <NoDots key="nodots">
                       <ListItem
@@ -244,17 +239,7 @@ export default class Chatroom extends React.Component {
 
             <InputPanel>
               <TextField
-                // textareaStyle={{
-                //   color: '#fafafa'
-                // }}
-                // hintStyle={{
-                //   color: '#fafafa'
-                // }}
-                // floatingLabelStyle={{
-                //   color: '#fafafa'
-                // }}
                 label="Enter a message."
-                // floatingLabelText="Enter a message."
                 multiline
                 rowsMax={4}
                 onChange={this.onInput}

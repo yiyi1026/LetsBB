@@ -1,11 +1,10 @@
 import { Box } from '@material-ui/core'
-import InputBase from '@material-ui/core/InputBase';
-import {blue} from '@material-ui/core/colors';
+import { blue } from '@material-ui/core/colors'
+import InputBase from '@material-ui/core/InputBase'
 import React from 'react'
 
-
 export default function Cell(props) {
-  let { x, y, value, onClick, selected,
+  const { x, y, value, onClick, selected,
     isPeer, isFixed, isTentative,
     isConflict } = props
   let bgcolor = 'white'
@@ -24,7 +23,7 @@ export default function Cell(props) {
   if (isFixed) {
     color = 'text.primary'
   }
-  if (isConflict){
+  if (isConflict) {
     color = 'error.main'
   }
   if (isTentative) {
@@ -46,17 +45,29 @@ export default function Cell(props) {
   }
 
   return (
-    <Box onClick={onClick} onChange={handleChange} bgcolor={bgcolor}
-      display='flex' width={1 / 9} justifyContent='center' alignItems='center'
-      border={1} borderTop={borderTop} borderBottom={borderBottom}
-      borderLeft={borderLeft} borderRight={borderRight} 
-      borderColor='text.secondary' fontSize={fontSize} 
-      borderRadius={1} >
+    <Box
+      onClick={onClick}
+      onChange={handleChange}
+      bgcolor={bgcolor}
+      display="flex"
+      width={1 / 9}
+      justifyContent="center"
+      alignItems="center"
+      border={1}
+      borderTop={borderTop}
+      borderBottom={borderBottom}
+      borderLeft={borderLeft}
+      borderRight={borderRight}
+      borderColor="text.secondary"
+      fontSize={fontSize}
+      borderRadius={1}
+    >
       <Box color={color}>
         <span style={{
           display: 'block',
           wordBreak: 'break-all'
-        }}>
+        }}
+        >
           <strong>
             {value != 0 ? value : ''}
           </strong>
@@ -64,7 +75,5 @@ export default function Cell(props) {
       </Box>
     </Box>
 
-
   )
-
 }

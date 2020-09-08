@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const userTemplates = require('./config/users')
 
 module.exports = function () {
@@ -30,23 +31,20 @@ module.exports = function () {
       .filter((u) => !usersTaken.has(u.id))
   }
 
-  function login(userId, pass){
-    const user = userTemplates.find(el => el.id == userId)
+  function login(userId, pass) {
+    const user = userTemplates.find((el) => el.id === userId)
     console.log(userId, pass)
-    if(user){
-      const bcrypt = require('bcrypt');
-      let result = bcrypt.compareSync(pass, user.password);
-      if(result) {
+    if (user) {
+      const result = bcrypt.compareSync(pass, user.password);
+      if (result) {
         // console.log("match")
         return true;
-      } else{
-        // console.log("pass not match")
-        return false;
       }
-    } else {
-      // console.log("user not find")
+      // console.log("pass not match")
       return false;
     }
+    // console.log("user not find")
+    return false;
   }
 
   function isUserAvailable(userId) {
