@@ -1,13 +1,10 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "airbnb"
-  ],
+  "extends": ["eslint:recommended", "airbnb"],
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
   "rules": {
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
+    "linebreak-style": ["error", "unix"],
     "comma-dangle": [
       "error",
       {
@@ -35,10 +32,7 @@
         }
       }
     ],
-    "jsx-quotes": [
-      "error",
-      "prefer-double"
-    ],
+    "jsx-quotes": ["error", "prefer-double"],
     "react/destructuring-assignment": [
       "error",
       "always",
