@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
-import {
-  Avatar,
+import { Avatar,
   Button,
   Divider,
   Fab,
@@ -11,8 +10,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  TextField,
-} from '@material-ui/core'
+  TextField } from '@material-ui/core'
 import { blue } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
@@ -198,9 +196,9 @@ export default class Chatroom extends React.Component {
             </IconButton> */}
           </Header>
 
-          <ChatroomImage src={this.props.chatroom.image} alt="" />
+          {/* <ChatroomImage src={this.props.chatroom.image} alt="" /> */}
 
-          <ChatPanel>
+          <ChatPanel src={this.props.chatroom.image} alt="">
             <Scrollable
               innerRef={(panel) => {
                 this.panel = panel

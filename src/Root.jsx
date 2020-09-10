@@ -1,18 +1,20 @@
-import Link from '@material-ui/core/Link'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 
 import Chatroom from './Chatroom'
-import Home from './Home'
 import Loader from './Loader'
 import Login from './Login'
 import MainLayout from './MainLayout'
 import socket from './socket'
 
-const theme = createMuiTheme({})
-const defaultName="Civ"
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark'
+  }
+})
+const defaultName = 'Civ'
 
 class Root extends React.Component {
   constructor(props, context) {
@@ -62,13 +64,14 @@ class Root extends React.Component {
     this.setState({ isRegisterInProcess: true })
     this.state.client.register(name, (err, user) => {
       if (err) {
-        return onRegisterResponse(null)}
+        return onRegisterResponse(null)
+      }
       return onRegisterResponse(user)
     })
   }
 
   async join(cb) {
-    const chatroomName = "invisible place"
+    const chatroomName = 'invisible place'
     return this.state.client.join(chatroomName, cb)
   }
 
@@ -110,15 +113,14 @@ class Root extends React.Component {
                     const onEnter = () => this.onEnterChatroom(
                       defaultName,
                       () => props.history.push('/login'),
-                      (chatHistory) => props.history.push({
-                        pathname: defaultName,
-                        state: { chatHistory }}))
+                      (chatHistory) => props.history.push({ pathname: defaultName,
+                        state: { chatHistory } }))
                     return (
                       <Login
                         clientLogin={this.state.client.login}
                         close={toChatroom}
                         register={(name) => this.register(name)}
-                        join={()=>this.join(()=>onEnter(name))}
+                        join={() => this.join(() => onEnter(name))}
                         {...props}
                       />
                     )
@@ -136,22 +138,11 @@ class Root extends React.Component {
                   exact
                   path="/"
                   render={(props) => {
-                    if(!this.state.user){
-                      return <Redirect to="/login"/>
-                    }else{
-                      const chatroom = this.state.chatroom[0]
-                      return this.renderChatroomOrRedirect(this.state.chatrooms[0], props)
-                      // return (<Chatroom
-                      //   chatroom={chatroom}
-                      //   chatHistory={chatHistory}
-                      //   user={this.state.user}
-                      //   onLeave={() => this.onLeaveChatroom(chatroom.name, () => history.push('/'))}
-                      //   onSendMessage={(message, cb) => this.state.client.message(chatroom.name, message, cb)}
-                      //   registerHandler={this.state.client.registerHandler}
-                      //   unregisterHandler={this.state.client.unregisterHandler}
-                      //   />)
+                    if (!this.state.user) {
+                      return <Redirect to="/login" />
                     }
-
+                    const chatroom = this.state.chatroom[0]
+                    return this.renderChatroomOrRedirect(this.state.chatrooms[0], props)
                   }}
                 />
               </Switch>
