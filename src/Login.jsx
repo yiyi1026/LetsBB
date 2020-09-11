@@ -11,6 +11,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import React, { useState } from 'react'
+import { grey } from '@material-ui/core/colors'
 
 function Copyright() {
   return (
@@ -35,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -64,7 +64,7 @@ export default function Login(props) {
   }
 
   return (
-    <Container component="main" maxWidth="xs" style={{ background: 'white' }}>
+    <Container component="main" maxWidth="xs" style={{ background: grey[500] }}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -108,7 +108,7 @@ export default function Login(props) {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="inherit"
             className={classes.submit}
             onClick={handleLogin}
           >
